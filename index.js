@@ -271,7 +271,7 @@ const deploy = (repoName, branchName) => {
         )
     });
 
-    Promise.all(sequencePromises)
+    Promise.map(sequencePromises, {concurrency: 1})
         .then(values => {
             sendMessage(results.join("\n"));
         });
