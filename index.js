@@ -17,19 +17,19 @@ const runCommand = (folder, cmd, args = []) => {
 
         process.stdout.on('data', data => {
             if (data) {
-                console.log(data);
+                //console.log(data);
             }
         });
 
         process.stderr.on('data', data => {
             if (data) {
-                console.log(data);
+                //console.log(data);
             }
         });
 
         process.on('error', code => {
             if (code) {
-                console.log(code);
+                //console.log(code);
             }
         });
 
