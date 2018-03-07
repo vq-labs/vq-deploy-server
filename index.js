@@ -12,13 +12,7 @@ const { IncomingWebhook } = require('@slack/client');
 const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
 const sendMessage = (message) => {
-    webhook.send(message, function(err, res) {
-        if (err) {
-            console.log('Error:', err);
-        } else {
-            console.log('Message sent: ', res);
-        }
-    });
+    webhook.send(message);
 }
 
 const DeploymentStrategies = {
