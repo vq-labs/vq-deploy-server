@@ -60,16 +60,14 @@ const DeploymentStrategies = {
                     "command": "git",
                     "args": [
                         "pull"
-                    ],
-                    "successMessage": "GIT pull completed"
+                    ]
                 },
                 {
                     "module": "INSTALL",
                     "command": "npm",
                     "args": [
                         "install"
-                    ],
-                    "successMessage": "Module installation completed"
+                    ]
                 },
                 {
                     "module": "RUN",
@@ -79,8 +77,7 @@ const DeploymentStrategies = {
                         "../ecosystem.config.js",
                         "--only",
                         "vq-deploy-server"
-                    ],
-                    "successMessage": "Server started running"
+                    ]
                 }
             ]
         }
