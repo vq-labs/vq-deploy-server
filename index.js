@@ -5,6 +5,7 @@ const path = require('path');
 const http = require('http');
 const createHandler = require('github-webhook-handler');
 const spawn = require('child_process').spawn;
+const exec = require('child_process').exec;
 const async = require('async');
 const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: process.env.GITHUB_HOOK_SECRET });
 const { IncomingWebhook } = require('@slack/client');
@@ -12,8 +13,8 @@ const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
 const runCommand = (folder, cmd, args = [], cb, endCb) => {
     return new Promise((resolve, reject) => {
-        const cd = spawn('cd', [path.join(appRoot, '../', folder)]);
         const process = spawn(cmd, args);
+        process.chdir(path.join(appRoot, '../', folder));
 
         process.stdout.on('data', data => {
             cb(data);
