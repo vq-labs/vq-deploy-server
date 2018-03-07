@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@slack/client": "^3.16.0",
     "dotenv": "^5.0.1",
     "github-webhook-handler": "^0.7.1"
   }
