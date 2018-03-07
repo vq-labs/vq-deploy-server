@@ -7,9 +7,9 @@ const createHandler = require('github-webhook-handler');
 const spawn = require('child_process').spawn;
 const exec = require('child_process').exec;
 const Promise = require("bluebird");
-const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: process.env.GITHUB_HOOK_SECRET });
-const { IncomingWebhook } = require('@slack/client');
-const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
+/* const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: process.env.GITHUB_HOOK_SECRET }); */
+/* const { IncomingWebhook } = require('@slack/client');
+const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL); */
 
 const runCommand = (folder, cmd, args = []) => {
     return new Promise((resolve, reject) => {
@@ -17,20 +17,21 @@ const runCommand = (folder, cmd, args = []) => {
 
         process.stdout.on('data', data => {
             if (data) {
-                //console.log(data);
+                console.log(data);
             }
         });
 
         process.stderr.on('data', data => {
             if (data) {
-                //console.log(data);
+                console.log(data);
+                reject();
             }
         });
 
         process.on('error', code => {
             if (code) {
                 reject();
-                //console.log(code);
+                console.log(code);
             }
         });
 
@@ -43,7 +44,7 @@ const runCommand = (folder, cmd, args = []) => {
     });
 }
 
-const sendMessage = (message) => {
+/* const sendMessage = (message) => {
     webhook.send(message, function(err, res) {
         if (err) {
             console.log('Error:', err);
@@ -51,10 +52,7 @@ const sendMessage = (message) => {
             console.log('Message sent: ', res);
         }
     });
-}
-
-console.log("test 1 asdfasdfasdfasd")
-
+} */
 
 const DeploymentStrategies = {
     "vq-deploy-server": {
@@ -226,7 +224,7 @@ const DeploymentStrategies = {
                     ],
                     "successMessage": "Module installation completed"
                 },
-                {
+/*                 {
                     "module": "BUILD",
                     "command": "npm",
                     "args": [
@@ -239,17 +237,17 @@ const DeploymentStrategies = {
                     "module": "SERVER",
                     "command": "",
                     "successMessage": "Server started"
-                }
+                } */
             ]
         }
     }
 }
 
 const deploy = (repoName, branchName) => {
-    sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    //sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const results = [];
 
-/*     if (code !== 0) {
+    /*     if (code !== 0) {
         results.push(`
             --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
         `);
@@ -281,6 +279,8 @@ const deploy = (repoName, branchName) => {
         });
 };
 
+deploy("vqmarketplace.com", "VM-32");
+/* 
 http.createServer((req, res) => {
     handler(req, res, (err) => {
         res.statusCode = 404
@@ -299,4 +299,4 @@ handler.on('push', (event) => {
     const branchName = event.payload.ref.replace("refs/heads/", "");
 
     deploy(repoName, branchName);
-});
+}); */
