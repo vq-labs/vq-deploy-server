@@ -72,6 +72,7 @@ const deploy = (repoName, branchName) => {
         return resolve();
     } */
 
+    const start = new Date().getTime();
     exec(
         path.join(appRoot, '../', folder, file),
         {cwd: path.join(appRoot, '../', folder)},
@@ -79,7 +80,13 @@ const deploy = (repoName, branchName) => {
             console.log(`${stdout}`);
             console.log(`${stderr}`);
             if (error !== null) {
-                console.log(`exec error: ${error}`);
+                return sendMessage(`
+                --[ERROR][${sequence.module}][${branchName}@${repoName}] Deploy failed. Error: ${error}
+            `)
+            } else {
+                return sendMessage(`
+                --[SUCCESS][${sequence.module}][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start}
+            `)
             }
         }
     );
