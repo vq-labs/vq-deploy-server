@@ -42,32 +42,32 @@ const DeploymentStrategies = {
     "vq-deploy-server": {
         "name": "DEPLOY SERVER",
         "folder": "vq-deploy-server",
-        "master": "deploy-master.sh"
+        "master": "deploy.sh"
     },
     "vq-marketplace-platform": {
         "name": "API",
         "folder": "vq-marketplace-api",
-        "master": "deploy-master.sh"
+        "master": "deploy.sh"
     },
     "vq-marketplace-web-app": {
         "name": "APP",
         "folder": "vq-marketplace-web-app",
-        "master": "deploy-master.sh"
+        "master": "deploy.sh"
     },
     "vq-marketplace-landing-page": {
         "name": "LANDING PAGE",
         "folder": "vq-marketplace-landing-page",
-        "master": "deploy-master.sh"
+        "master": "deploy.sh"
     },
     "vq-labs.com": {
         "name": "VQ-LABS.COM",
         "folder": "vq-labs.com",
-        "master": "deploy-master.sh"
+        "master": "deploy.sh"
     },
     "vqmarketplace.com": {
         "name": "VQMARKETPLACE.COM",
         "folder": "vqmarketplace.com",
-        "VM-32": "deploy-master.sh"
+        "VM-32": "deploy.sh"
     }
 }
 
@@ -102,7 +102,7 @@ const deploy = (repoName, branchName) => {
     );
 };
 
-deploy("vq-marketplace-landing-page", "master");
+deploy("vq-marketplace-landing-page", "VM-32");
 /* 
 http.createServer((req, res) => {
     handler(req, res, (err) => {
