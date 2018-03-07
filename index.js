@@ -56,21 +56,9 @@ const DeploymentStrategies = {
 }
 
 const deploy = (repoName, branchName) => {
-    sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    sendMessage(`:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const folder = DeploymentStrategies[repoName].folder;
     const file = DeploymentStrategies[repoName][branchName];
-
-    /*     if (code !== 0) {
-        results.push(`
-            --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
-        `);
-        return reject()
-    } else {
-        results.push(`
-            --[SUCCESS][${sequence.module}][${branchName}@${repoName}] ${sequence.successMessage}
-        `)
-        return resolve();
-    } */
 
     const start = new Date().getTime();
     exec(
@@ -81,11 +69,11 @@ const deploy = (repoName, branchName) => {
             console.log(`${stderr}`);
             if (error !== null) {
                 return sendMessage(`
-                [DEPLOY][ERROR][${branchName}@${repoName}] Deploy failed. Error: ${error}
+                :x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}
             `)
             } else {
                 return sendMessage(`
-                [DEPLOY][SUCCESS][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start}
+                :heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds
             `)
             }
         }
