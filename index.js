@@ -29,6 +29,7 @@ const runCommand = (folder, cmd, args = []) => {
 
         process.on('error', code => {
             if (code) {
+                reject();
                 //console.log(code);
             }
         });
