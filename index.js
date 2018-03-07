@@ -7,11 +7,11 @@ const createHandler = require('github-webhook-handler');
 const spawn = require('child_process').spawn;
 const exec = require('child_process').exec;
 const Promise = require("bluebird");
-/* const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: process.env.GITHUB_HOOK_SECRET }); */
-/* const { IncomingWebhook } = require('@slack/client');
-const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL); */
+const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: process.env.GITHUB_HOOK_SECRET });
+const { IncomingWebhook } = require('@slack/client');
+const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
-/* const sendMessage = (message) => {
+const sendMessage = (message) => {
     webhook.send(message, function(err, res) {
         if (err) {
             console.log('Error:', err);
@@ -19,7 +19,7 @@ const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL); */
             console.log('Message sent: ', res);
         }
     });
-} */
+}
 
 const DeploymentStrategies = {
     "vq-deploy-server": {
