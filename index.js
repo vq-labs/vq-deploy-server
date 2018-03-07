@@ -74,6 +74,7 @@ const deploy = (repoName, branchName) => {
 
     exec(
         path.join(appRoot, '../', folder, file),
+        {cwd: path.join(appRoot, '../', folder)},
         (error, stdout, stderr) => {
             console.log(`${stdout}`);
             console.log(`${stderr}`);
