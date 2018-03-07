@@ -41,7 +41,6 @@ const prependNameToMessage = (name, message) => {
 }
 
 console.log("test")
-console.log("test")
 
 
 const DeploymentStrategies = {
