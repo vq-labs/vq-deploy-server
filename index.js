@@ -11,27 +11,27 @@ const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: proc
 const { IncomingWebhook } = require('@slack/client');
 const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
-const runCommand = (folder, cmd, args = [], cb) => {
+const runCommand = (folder, cmd, args = []) => {
     return new Promise((resolve, reject) => {
         const process = spawn(cmd, args, {cwd: path.join(appRoot, '../', folder)});
 
         process.stdout.on('data', data => {
-            cb(data);
+            console.log(data);
         });
 
         process.stderr.on('data', data => {
-            cb(undefined, data);
+            console.log(data);
         });
 
         process.on('error', code => {
-            console.log('err here', code);
+            console.log(code);
         });
 
         process.on('close', code => {
             if (code !== 0) {
                 return reject();
             }
-            return resolve(code);
+            return resolve(code, cmd);
         });
     });
 }
@@ -245,7 +245,7 @@ const deploy = (repoName, branchName) => {
     sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const results = [];
 
-    if (code !== 0) {
+/*     if (code !== 0) {
         results.push(`
             --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
         `);
@@ -255,27 +255,21 @@ const deploy = (repoName, branchName) => {
             --[SUCCESS][${sequence.module}][${branchName}@${repoName}] ${sequence.successMessage}
         `)
         return resolve();
-    }
+    } */
 
     const sequencePromises = DeploymentStrategies[repoName][branchName].runSequence.map(sequence => {
         return runCommand(
             DeploymentStrategies[repoName].folder,
             sequence.command,
-            sequence.args,
-            (data, err) => {
-                if (err) {
-                    console.log(err)
-                }
-   
-                console.log(data)
-            }
+            sequence.args
         )
     });
 
     Promise.each(
         sequencePromises)
         .then(values => {
-            sendMessage(results.join("\n"));
+            console.log('VALUES', values)
+            //sendMessage(results.join("\n"));
         });
 };
 
