@@ -13,8 +13,7 @@ const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
 const runCommand = (folder, cmd, args = [], cb, endCb) => {
     return new Promise((resolve, reject) => {
-        const process = spawn(cmd, args);
-        process.chdir(path.join(appRoot, '../', folder));
+        const process = spawn(cmd, args, {cwd: path.join(appRoot, '../', folder)});
 
         process.stdout.on('data', data => {
             cb(data);
