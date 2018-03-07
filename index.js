@@ -6,6 +6,7 @@ var spawn = require('child_process').spawn
 var handler = createHandler({ path: process.env.HOOK_PATH, secret: process.env.HOOK_SECRET })
 
 http.createServer((req, res) => {
+    console.log('this is test');
   handler(req, res, (err) => {
     res.statusCode = 404
     res.end('no such location')
