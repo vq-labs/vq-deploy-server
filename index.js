@@ -58,7 +58,8 @@ const DeploymentStrategies = {
                     "args": [
                         "pull"
                     ],
-                    "successMessage": "GIT pull completed"
+                    "successMessage": "GIT pull completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "INSTALL",
@@ -66,7 +67,8 @@ const DeploymentStrategies = {
                     "args": [
                         "install"
                     ],
-                    "successMessage": "Module installation completed"
+                    "successMessage": "Module installation completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "RUN",
@@ -77,7 +79,8 @@ const DeploymentStrategies = {
                         "--only",
                         "vq-deploy-server"
                     ],
-                    "successMessage": "Server started running"
+                    "successMessage": "Server started running",
+                    "onlySuccessMessage": true
                 }
             ]
         }
@@ -93,7 +96,8 @@ const DeploymentStrategies = {
                     "args": [
                         "install"
                     ],
-                    "successMessage": "Module installation completed"
+                    "successMessage": "Module installation completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "BUILD",
@@ -107,7 +111,8 @@ const DeploymentStrategies = {
                 {
                     "module": "SERVER",
                     "command": "",
-                    "successMessage": "Server started"
+                    "successMessage": "Server started",
+                    "onlySuccessMessage": true
                 }
             ]
         }
@@ -123,7 +128,8 @@ const DeploymentStrategies = {
                     "args": [
                         "install"
                     ],
-                    "successMessage": "Module installation completed"
+                    "successMessage": "Module installation completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "BUILD",
@@ -141,7 +147,8 @@ const DeploymentStrategies = {
                         "run",
                         "deploy"
                     ],
-                    "successMessage": "Server started"
+                    "successMessage": "Server started",
+                    "onlySuccessMessage": true
                 }
             ]
         }
@@ -157,7 +164,8 @@ const DeploymentStrategies = {
                     "args": [
                         "install"
                     ],
-                    "successMessage": "Module installation completed"
+                    "successMessage": "Module installation completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "BUILD",
@@ -171,7 +179,8 @@ const DeploymentStrategies = {
                 {
                     "module": "SERVER",
                     "command": "",
-                    "successMessage": "Server started"
+                    "successMessage": "Server started",
+                    "onlySuccessMessage": true
                 }
             ]
         }
@@ -187,7 +196,8 @@ const DeploymentStrategies = {
                     "args": [
                         "install"
                     ],
-                    "successMessage": "Module installation completed"
+                    "successMessage": "Module installation completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "BUILD",
@@ -201,7 +211,8 @@ const DeploymentStrategies = {
                 {
                     "module": "SERVER",
                     "command": "",
-                    "successMessage": "Server started"
+                    "successMessage": "Server started",
+                    "onlySuccessMessage": true
                 }
             ]
         }
@@ -217,7 +228,8 @@ const DeploymentStrategies = {
                     "args": [
                         "install"
                     ],
-                    "successMessage": "Module installation completed"
+                    "successMessage": "Module installation completed",
+                    "onlySuccessMessage": true
                 },
                 {
                     "module": "BUILD",
@@ -231,7 +243,8 @@ const DeploymentStrategies = {
                 {
                     "module": "SERVER",
                     "command": "",
-                    "successMessage": "Server started"
+                    "successMessage": "Server started",
+                    "onlySuccessMessage": true
                 }
             ]
         }
@@ -247,14 +260,18 @@ const deploy = (repoName, branchName) => {
             sequence.args,
             (data, err) => {
                 if (err) {
-                    sendMessage(`
-                        --[ERROR][${sequence.module}][${branchName}@${repoName}] An error has occurred: ${err}
-                    `)
+                    if (!sequence.onlySuccessMessage) {
+                        sendMessage(`
+                            --[ERROR][${sequence.module}][${branchName}@${repoName}] An error has occurred: ${err}
+                        `)
+                    }
                 }
 
-                sendMessage(`
-                        --[PROGRESS][${sequence.module}][${branchName}@${repoName}] Data: ${data}
-                    `)
+                if (!sequence.onlySuccessMessage) {    
+                    sendMessage(`
+                            --[PROGRESS][${sequence.module}][${branchName}@${repoName}] Data: ${data}
+                        `)
+                }
             },
             (code, reject, resolve) => {
                 if (code !== 0) {
