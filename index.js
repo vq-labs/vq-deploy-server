@@ -11,7 +11,7 @@ const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: proc
 const { IncomingWebhook } = require('@slack/client');
 const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
-const runCommand = (folder, cmd, args = [], cb, endCb) => {
+const runCommand = (folder, cmd, args = [], cb) => {
     return new Promise((resolve, reject) => {
         const process = spawn(cmd, args, {cwd: path.join(appRoot, '../', folder)});
 
@@ -28,7 +28,10 @@ const runCommand = (folder, cmd, args = [], cb, endCb) => {
         });
 
         process.on('close', code => {
-            return endCb(code, reject, resolve);
+            if (code !== 0) {
+                return reject();
+            }
+            return resolve(code);
         });
     });
 }
@@ -242,6 +245,18 @@ const deploy = (repoName, branchName) => {
     sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const results = [];
 
+    if (code !== 0) {
+        results.push(`
+            --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
+        `);
+        return reject()
+    } else {
+        results.push(`
+            --[SUCCESS][${sequence.module}][${branchName}@${repoName}] ${sequence.successMessage}
+        `)
+        return resolve();
+    }
+
     const sequencePromises = DeploymentStrategies[repoName][branchName].runSequence.map(sequence => {
         return runCommand(
             DeploymentStrategies[repoName].folder,
@@ -253,20 +268,6 @@ const deploy = (repoName, branchName) => {
                 }
    
                 console.log(data)
-            },
-            (code, reject, resolve) => {
-                if (code !== 0) {
-                    results.push(`
-                        --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
-                    `);
-                    return reject()
-                } else {
-                    results.push(`
-                        --[SUCCESS][${sequence.module}][${branchName}@${repoName}] ${sequence.successMessage}
-                    `)
-                    return resolve();
-                }
-
             }
         )
     });
