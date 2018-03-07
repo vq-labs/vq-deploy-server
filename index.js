@@ -179,7 +179,7 @@ const DeploymentStrategies = {
 }
 
 const deploy = (repoName, branchName) => {
-    sendMessage(`[DEPLOY][${branchame}@${repoName}] Started running deployment scripts...`);
+    sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const sequencePromises = DeploymentStrategies[repoName][branchName].runSequence.map(sequence => {
         return runCommand(
             sequence.command,
@@ -187,23 +187,23 @@ const deploy = (repoName, branchName) => {
             (data, err) => {
                 if (err) {
                     sendMessage(`
-                        --[ERROR][${sequence.name}][${branchame}@${repoName}] An error has occurred: ${err}
+                        --[ERROR][${sequence.name}][${branchName}@${repoName}] An error has occurred: ${err}
                     `)
                 }
 
                 sendMessage(`
-                        --[PROGRESS][${sequence.name}][${branchame}@${repoName}] Data: ${data}
+                        --[PROGRESS][${sequence.name}][${branchName}@${repoName}] Data: ${data}
                     `)
             },
             (code, reject, resolve) => {
                 if (code !== 0) {
                     sendMessage(`
-                        --[ERROR][${sequence.name}][${branchame}@${repoName}] Command was not completed. Please try again
+                        --[ERROR][${sequence.name}][${branchName}@${repoName}] Command was not completed. Please try again
                     `);
                     return reject()
                 } else {
                     sendMessage(`
-                        --[SUCCESS][${sequence.name}][${branchame}@${repoName}] ${sequence.successMessage}
+                        --[SUCCESS][${sequence.name}][${branchName}@${repoName}] ${sequence.successMessage}
                     `)
                     return resolve();
                 }
