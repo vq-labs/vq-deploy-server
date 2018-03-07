@@ -2,7 +2,7 @@ require('dotenv').config();
 
 var http = require('http')
 var createHandler = require('github-webhook-handler')
-var handler = createHandler({ path: process.env.PATH, secret: process.env.SECRET })
+var handler = createHandler({ path: process.env.HOOK_PATH, secret: process.env.HOOK_SECRET })
 
 http.createServer(function (req, res) {
   handler(req, res, function (err) {
