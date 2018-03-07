@@ -20,6 +20,10 @@ const runCommand = (cmd, args = [], cb, endCb) => {
             cb(undefined, data);
         });
 
+        process.on('error', code => {
+            console.log('err here', code);
+        });
+
         process.on('close', code => {
             return endCb(code, reject, resolve);
         });
