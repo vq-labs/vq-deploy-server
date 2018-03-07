@@ -43,10 +43,6 @@ const sendMessage = (message) => {
     });
 }
 
-const prependNameToMessage = (name, message) => {
-    return `[${name}] ${message}`;
-}
-
 console.log("test")
 
 
@@ -74,9 +70,12 @@ const DeploymentStrategies = {
                 },
                 {
                     "module": "RUN",
-                    "command": "node",
+                    "command": "pm2",
                     "args": [
-                        "index.js"
+                        "restart",
+                        "../ecosystem.config.js",
+                        "--only",
+                        "vq-deploy-server"
                     ],
                     "successMessage": "Server started running"
                 }
