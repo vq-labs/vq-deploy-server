@@ -240,6 +240,8 @@ const DeploymentStrategies = {
 
 const deploy = (repoName, branchName) => {
     sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    const results = [];
+
     const sequencePromises = DeploymentStrategies[repoName][branchName].runSequence.map(sequence => {
         return runCommand(
             DeploymentStrategies[repoName].folder,
@@ -254,12 +256,12 @@ const deploy = (repoName, branchName) => {
             },
             (code, reject, resolve) => {
                 if (code !== 0) {
-                    sendMessage(`
+                    results.push(`
                         --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
                     `);
                     return reject()
                 } else {
-                    sendMessage(`
+                    results.push(`
                         --[SUCCESS][${sequence.module}][${branchName}@${repoName}] ${sequence.successMessage}
                     `)
                     return resolve();
@@ -271,7 +273,7 @@ const deploy = (repoName, branchName) => {
 
     Promise.all(sequencePromises)
         .then(values => {
-            console.log('VALUES', values);
+            sendMessage(results.join("\n"));
         });
 };
 
