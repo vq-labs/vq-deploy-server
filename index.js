@@ -56,7 +56,7 @@ const DeploymentStrategies = {
 }
 
 const deploy = (repoName, branchName) => {
-    //sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const folder = DeploymentStrategies[repoName].folder;
     const file = DeploymentStrategies[repoName][branchName];
 
@@ -81,11 +81,11 @@ const deploy = (repoName, branchName) => {
             console.log(`${stderr}`);
             if (error !== null) {
                 return sendMessage(`
-                --[ERROR][${sequence.module}][${branchName}@${repoName}] Deploy failed. Error: ${error}
+                [DEPLOY][ERROR][${branchName}@${repoName}] Deploy failed. Error: ${error}
             `)
             } else {
                 return sendMessage(`
-                --[SUCCESS][${sequence.module}][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start}
+                [DEPLOY][SUCCESS][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start}
             `)
             }
         }
