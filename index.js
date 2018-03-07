@@ -16,15 +16,21 @@ const runCommand = (folder, cmd, args = []) => {
         const process = spawn(cmd, args, {cwd: path.join(appRoot, '../', folder)});
 
         process.stdout.on('data', data => {
-            console.log(data);
+            if (data) {
+                console.log(data);
+            }
         });
 
         process.stderr.on('data', data => {
-            console.log(data);
+            if (data) {
+                console.log(data);
+            }
         });
 
         process.on('error', code => {
-            console.log(code);
+            if (code) {
+                console.log(code);
+            }
         });
 
         process.on('close', code => {
@@ -254,7 +260,7 @@ const deploy = (repoName, branchName) => {
         return resolve();
     } */
 
-    const sequencePromises = DeploymentStrategies[repoName][branchName].runSequence.map(sequence => {
+    const sequencePromises = DeploymentStrategies[repoName][branchName]["runSequence"].map(sequence => {
         return runCommand(
             DeploymentStrategies[repoName].folder,
             sequence.command,
