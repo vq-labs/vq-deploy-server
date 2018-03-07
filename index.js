@@ -11,23 +11,6 @@ const Promise = require("bluebird");
 /* const { IncomingWebhook } = require('@slack/client');
 const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL); */
 
-const runCommand = (folder, cmd, args = []) => {
-    return new Promise((resolve, reject) => {
-        return exec(
-            path.join(appRoot, '../', folder, 'deploy.sh'),
-            (error, stdout, stderr) => {
-                console.log(`${stdout}`);
-                console.log(`${stderr}`);
-                if (error !== null) {
-                    console.log(`exec error: ${error}`);
-                    reject();
-                }
-                resolve();
-            }
-        );
-    });
-}
-
 /* const sendMessage = (message) => {
     webhook.send(message, function(err, res) {
         if (err) {
@@ -57,7 +40,8 @@ const DeploymentStrategies = {
     "vq-marketplace-landing-page": {
         "name": "LANDING PAGE",
         "folder": "vq-marketplace-landing-page",
-        "master": "deploy.sh"
+        "master": "deploy.sh",
+        "VM-32": "deploy.sh"
     },
     "vq-labs.com": {
         "name": "VQ-LABS.COM",
@@ -102,8 +86,7 @@ const deploy = (repoName, branchName) => {
     );
 };
 
-deploy("vq-marketplace-landing-page", "VM-32");
-/* 
+
 http.createServer((req, res) => {
     handler(req, res, (err) => {
         res.statusCode = 404
@@ -122,4 +105,4 @@ handler.on('push', (event) => {
     const branchName = event.payload.ref.replace("refs/heads/", "");
 
     deploy(repoName, branchName);
-}); */
+});
