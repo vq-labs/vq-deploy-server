@@ -27,7 +27,7 @@ http.createServer((req, res) => {
         res.statusCode = 404
         res.end('no such location')
     });
-}).listen(7777);
+}).listen(process.env.SERVER_PORT);
 
 handler.on('error', (err) => {
   console.error('Error:', err.message);
