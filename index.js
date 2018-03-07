@@ -247,14 +247,10 @@ const deploy = (repoName, branchName) => {
             sequence.args,
             (data, err) => {
                 if (err) {
-                    console.log(`
-                        --[ERROR][${sequence.module}][${branchName}@${repoName}] An error has occurred: ${err}
-                    `)
+                    console.log(err)
                 }
    
-                console.log(`
-                        --[PROGRESS][${sequence.module}][${branchName}@${repoName}] Data: ${data}
-                    `)
+                console.log(data)
             },
             (code, reject, resolve) => {
                 if (code !== 0) {
