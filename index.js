@@ -13,34 +13,18 @@ const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL); */
 
 const runCommand = (folder, cmd, args = []) => {
     return new Promise((resolve, reject) => {
-        const process = spawn(cmd, args, {cwd: path.join(appRoot, '../', folder)});
-
-        process.stdout.on('data', data => {
-            if (data) {
-                console.log(data);
+        return exec(
+            path.join(appRoot, '../', folder, 'deploy.sh'),
+            (error, stdout, stderr) => {
+                console.log(`${stdout}`);
+                console.log(`${stderr}`);
+                if (error !== null) {
+                    console.log(`exec error: ${error}`);
+                    reject();
+                }
+                resolve();
             }
-        });
-
-        process.stderr.on('data', data => {
-            if (data) {
-                console.log(data);
-                reject();
-            }
-        });
-
-        process.on('error', code => {
-            if (code) {
-                reject();
-                console.log(code);
-            }
-        });
-
-        process.on('close', code => {
-            if (code !== 0) {
-                return reject();
-            }
-            return resolve(code, cmd);
-        });
+        );
     });
 }
 
@@ -58,194 +42,39 @@ const DeploymentStrategies = {
     "vq-deploy-server": {
         "name": "DEPLOY SERVER",
         "folder": "vq-deploy-server",
-        "master": {
-            "runSequence": [
-                {
-                    "module": "GIT",
-                    "command": "git",
-                    "args": [
-                        "pull"
-                    ]
-                },
-                {
-                    "module": "INSTALL",
-                    "command": "npm",
-                    "args": [
-                        "install"
-                    ]
-                },
-                {
-                    "module": "RUN",
-                    "command": "pm2",
-                    "args": [
-                        "restart",
-                        "../ecosystem.config.js",
-                        "--only",
-                        "vq-deploy-server"
-                    ]
-                }
-            ]
-        }
+        "master": "deploy-master.sh"
     },
     "vq-marketplace-platform": {
         "name": "API",
         "folder": "vq-marketplace-api",
-        "master": {
-            "runSequence": [
-                {
-                    "module": "INSTALL",
-                    "command": "npm",
-                    "args": [
-                        "install"
-                    ],
-                    "successMessage": "Module installation completed"
-                },
-                {
-                    "module": "BUILD",
-                    "command": "npm",
-                    "args": [
-                        "run",
-                        "build:nolint"
-                    ],
-                    "successMessage": "Build completed"
-                },
-                {
-                    "module": "SERVER",
-                    "command": "",
-                    "successMessage": "Server started"
-                }
-            ]
-        }
+        "master": "deploy-master.sh"
     },
     "vq-marketplace-web-app": {
         "name": "APP",
         "folder": "vq-marketplace-web-app",
-        "master": {
-            "runSequence": [
-                {
-                    "module": "INSTALL",
-                    "command": "npm",
-                    "args": [
-                        "install"
-                    ],
-                    "successMessage": "Module installation completed"
-                },
-                {
-                    "module": "BUILD",
-                    "command": "npm",
-                    "args": [
-                        "run",
-                        "build"
-                    ],
-                    "successMessage": "Build completed"
-                },
-                {
-                    "module": "SERVER",
-                    "command": "npm",
-                    "args": [
-                        "run",
-                        "deploy"
-                    ],
-                    "successMessage": "Server started"
-                }
-            ]
-        }
+        "master": "deploy-master.sh"
     },
     "vq-marketplace-landing-page": {
         "name": "LANDING PAGE",
         "folder": "vq-marketplace-landing-page",
-        "master": {
-            "runSequence": [
-                {
-                    "module": "INSTALL",
-                    "command": "npm",
-                    "args": [
-                        "install"
-                    ],
-                    "successMessage": "Module installation completed"
-                },
-                {
-                    "module": "BUILD",
-                    "command": "npm",
-                    "args": [
-                        "run",
-                        "build"
-                    ],
-                    "successMessage": "Deploy completed"
-                },
-                {
-                    "module": "SERVER",
-                    "command": "",
-                    "successMessage": "Server started"
-                }
-            ]
-        }
+        "master": "deploy-master.sh"
     },
     "vq-labs.com": {
         "name": "VQ-LABS.COM",
         "folder": "vq-labs.com",
-        "master": {
-            "runSequence": [
-                {
-                    "module": "INSTALL",
-                    "command": "npm",
-                    "args": [
-                        "install"
-                    ],
-                    "successMessage": "Module installation completed"
-                },
-                {
-                    "module": "BUILD",
-                    "command": "npm",
-                    "args": [
-                        "run",
-                        "build"
-                    ],
-                    "successMessage": "Deploy completed"
-                },
-                {
-                    "module": "SERVER",
-                    "command": "",
-                    "successMessage": "Server started"
-                }
-            ]
-        }
+        "master": "deploy-master.sh"
     },
     "vqmarketplace.com": {
         "name": "VQMARKETPLACE.COM",
         "folder": "vqmarketplace.com",
-        "VM-32": {
-            "runSequence": [
-                {
-                    "module": "INSTALL",
-                    "command": "npm",
-                    "args": [
-                        "install"
-                    ],
-                    "successMessage": "Module installation completed"
-                },
-/*                 {
-                    "module": "BUILD",
-                    "command": "npm",
-                    "args": [
-                        "run",
-                        "build"
-                    ],
-                    "successMessage": "Deploy completed"
-                },
-                {
-                    "module": "SERVER",
-                    "command": "",
-                    "successMessage": "Server started"
-                } */
-            ]
-        }
+        "VM-32": "deploy-master.sh"
     }
 }
 
 const deploy = (repoName, branchName) => {
     //sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
-    const results = [];
+    const folder = DeploymentStrategies[repoName].folder;
+    const file = DeploymentStrategies[repoName][branchName];
 
     /*     if (code !== 0) {
         results.push(`
@@ -259,27 +88,21 @@ const deploy = (repoName, branchName) => {
         return resolve();
     } */
 
-    const sequencePromises = [];
-    
-    DeploymentStrategies[repoName][branchName]["runSequence"].map(sequence => {
-        sequencePromises.push(
-            runCommand(
-                DeploymentStrategies[repoName].folder,
-                sequence.command,
-                sequence.args
-            )
-        );
-    });
-
-    Promise.each(
-        sequencePromises)
-        .then(values => {
-            console.log('VALUES', values)
-            //sendMessage(results.join("\n"));
-        });
+    exec(
+        path.join(appRoot, '../', folder, file),
+        (error, stdout, stderr) => {
+            console.log(`${stdout}`);
+            console.log(`${stderr}`);
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+                reject();
+            }
+            resolve();
+        }
+    );
 };
 
-deploy("vqmarketplace.com", "VM-32");
+deploy("vq-marketplace-landing-page", "master");
 /* 
 http.createServer((req, res) => {
     handler(req, res, (err) => {
