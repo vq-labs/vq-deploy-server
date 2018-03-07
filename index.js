@@ -6,7 +6,7 @@ const spawn = require('child_process').spawn
 const handler = createHandler({ path: process.env.HOOK_PATH, secret: process.env.HOOK_SECRET })
 
 http.createServer((req, res) => {
-    console.log('this is test');
+    console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
   handler(req, res, (err) => {
     res.statusCode = 404
     res.end('no such location')
@@ -21,9 +21,7 @@ handler.on('push', (event) => {
     const repoName = event.payload.repository.name;
     const branchName = event.payload.ref.replace("refs/heads/", "");
     if (branchName === process.env.HOOK_BRANCH) {
-        console.log('Received a push event for %s to %s',
-        repoName,
-        branchName)
+        console.log(`[VQ-DEPLOY-SERVER] received a push event for %s repository %s branch`, repoName, branchName);
     }
 
 })
