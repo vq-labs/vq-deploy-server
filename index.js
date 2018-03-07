@@ -260,12 +260,16 @@ const deploy = (repoName, branchName) => {
         return resolve();
     } */
 
-    const sequencePromises = DeploymentStrategies[repoName][branchName]["runSequence"].map(sequence => {
-        return runCommand(
-            DeploymentStrategies[repoName].folder,
-            sequence.command,
-            sequence.args
-        )
+    const sequencePromises = [];
+    
+    DeploymentStrategies[repoName][branchName]["runSequence"].map(sequence => {
+        sequencePromises.push(
+            runCommand(
+                DeploymentStrategies[repoName].folder,
+                sequence.command,
+                sequence.args
+            )
+        );
     });
 
     Promise.each(
