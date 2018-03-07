@@ -79,9 +79,7 @@ const deploy = (repoName, branchName) => {
             console.log(`${stderr}`);
             if (error !== null) {
                 console.log(`exec error: ${error}`);
-                reject();
             }
-            resolve();
         }
     );
 };
