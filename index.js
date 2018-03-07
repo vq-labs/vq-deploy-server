@@ -212,7 +212,7 @@ const DeploymentStrategies = {
     "vqmarketplace.com": {
         "name": "VQMARKETPLACE.COM",
         "folder": "vqmarketplace.com",
-        "master": {
+        "VM-32": {
             "runSequence": [
                 {
                     "module": "INSTALL",
