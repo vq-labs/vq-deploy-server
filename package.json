@@ -1,0 +1,15 @@
+{
+  "name": "vq-deploy-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "github-webhook-handler": "^0.7.1"
+  }
+}
