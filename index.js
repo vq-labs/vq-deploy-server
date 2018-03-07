@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-var http = require('http')
-var createHandler = require('github-webhook-handler')
-var spawn = require('child_process').spawn
-var handler = createHandler({ path: process.env.HOOK_PATH, secret: process.env.HOOK_SECRET })
+const http = require('http')
+const createHandler = require('github-webhook-handler')
+const spawn = require('child_process').spawn
+const handler = createHandler({ path: process.env.HOOK_PATH, secret: process.env.HOOK_SECRET })
 
 http.createServer((req, res) => {
     console.log('this is test');
@@ -18,20 +18,17 @@ handler.on('error', (err) => {
 })
 
 handler.on('push', (event) => {
-  console.log('Received a push event for %s to %s',
-    event.payload.repository.name,
-    event.payload.ref)
+    const repoName = event.payload.repository.name;
+    const branchName = event.payload.ref.replace("refs/heads/", "");
+    if (branchName === process.env.HOOK_BRANCH) {
+        console.log('Received a push event for %s to %s',
+        repoName,
+        branchName)
+    }
+
 })
 
-handler.on('issues', (event) => {
-  console.log('Received an issue event for %s action=%s: #%d %s',
-    event.payload.repository.name,
-    event.payload.action,
-    event.payload.issue.number,
-    event.payload.issue.title)
-})
-
-var npm = spawn("s3-deploy", args, { cwd: './build' });
+const npm = spawn("s3-deploy", args, { cwd: './build' });
 
 npm.stdout.on('data', data => {
     console.log(`stdout: ${data}`);
