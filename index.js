@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const appRoot = require('app-root-path');
+const appRoot = require('app-root-path').path;
 const path = require('path');
 const http = require('http');
 const createHandler = require('github-webhook-handler');
