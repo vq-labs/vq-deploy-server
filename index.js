@@ -51,17 +51,26 @@ const DeploymentStrategies = {
             "runSequence": [
                 {
                     "module": "GIT",
-                    "command": "git pull",
+                    "command": "git",
+                    "args": [
+                        "pull"
+                    ],
                     "successMessage": "GIT pull completed"
                 },
                 {
                     "module": "INSTALL",
-                    "command": "npm install",
+                    "command": "npm",
+                    "args": [
+                        "install"
+                    ],
                     "successMessage": "Module installation completed"
                 },
                 {
                     "module": "RUN",
-                    "command": "node index",
+                    "command": "node",
+                    "args": [
+                        "index.js"
+                    ],
                     "successMessage": "Server started running"
                 }
             ]
@@ -73,12 +82,19 @@ const DeploymentStrategies = {
             "runSequence": [
                 {
                     "module": "INSTALL",
-                    "command": "npm install",
+                    "command": "npm",
+                    "args": [
+                        "install"
+                    ],
                     "successMessage": "Module installation completed"
                 },
                 {
                     "module": "BUILD",
-                    "command": "npm run build:nolint",
+                    "command": "npm",
+                    "args": [
+                        "run",
+                        "build:nolint"
+                    ],
                     "successMessage": "Build completed"
                 },
                 {
@@ -95,17 +111,28 @@ const DeploymentStrategies = {
             "runSequence": [
                 {
                     "module": "INSTALL",
-                    "command": "npm install",
+                    "command": "npm",
+                    "args": [
+                        "install"
+                    ],
                     "successMessage": "Module installation completed"
                 },
                 {
                     "module": "BUILD",
-                    "command": "npm run build",
+                    "command": "npm",
+                    "args": [
+                        "run",
+                        "build"
+                    ],
                     "successMessage": "Build completed"
                 },
                 {
                     "module": "SERVER",
-                    "command": "npm run deploy",
+                    "command": "npm",
+                    "args": [
+                        "run",
+                        "deploy"
+                    ],
                     "successMessage": "Server started"
                 }
             ]
@@ -117,12 +144,19 @@ const DeploymentStrategies = {
             "runSequence": [
                 {
                     "module": "INSTALL",
-                    "command": "npm install",
+                    "command": "npm",
+                    "args": [
+                        "install"
+                    ],
                     "successMessage": "Module installation completed"
                 },
                 {
                     "module": "BUILD",
-                    "command": "npm run build",
+                    "command": "npm",
+                    "args": [
+                        "run",
+                        "build"
+                    ],
                     "successMessage": "Deploy completed"
                 },
                 {
@@ -139,12 +173,19 @@ const DeploymentStrategies = {
             "runSequence": [
                 {
                     "module": "INSTALL",
-                    "command": "npm install",
+                    "command": "npm",
+                    "args": [
+                        "install"
+                    ],
                     "successMessage": "Module installation completed"
                 },
                 {
                     "module": "BUILD",
-                    "command": "npm run build",
+                    "command": "npm",
+                    "args": [
+                        "run",
+                        "build"
+                    ],
                     "successMessage": "Deploy completed"
                 },
                 {
@@ -161,12 +202,19 @@ const DeploymentStrategies = {
             "runSequence": [
                 {
                     "module": "INSTALL",
-                    "command": "npm install",
+                    "command": "npm",
+                    "args": [
+                        "install"
+                    ],
                     "successMessage": "Module installation completed"
                 },
                 {
                     "module": "BUILD",
-                    "command": "npm run build",
+                    "command": "npm",
+                    "args": [
+                        "run",
+                        "build"
+                    ],
                     "successMessage": "Deploy completed"
                 },
                 {
