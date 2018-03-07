@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const appRoot = require('app-root-path');
+const path = require('path');
 const http = require('http');
 const createHandler = require('github-webhook-handler');
 const spawn = require('child_process').spawn;
@@ -8,8 +10,9 @@ const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: proc
 const { IncomingWebhook } = require('@slack/client');
 const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
 
-const runCommand = (cmd, args = [], cb, endCb) => {
+const runCommand = (folder, cmd, args = [], cb, endCb) => {
     return new Promise((resolve, reject) => {
+        const cd = spawn('cd', [path.join(appRoot, '../', folder)]);
         const process = spawn(cmd, args);
 
         process.stdout.on('data', data => {
@@ -50,6 +53,7 @@ console.log("test")
 const DeploymentStrategies = {
     "vq-deploy-server": {
         "name": "DEPLOY SERVER",
+        "folder": "vq-deploy-server",
         "master": {
             "runSequence": [
                 {
@@ -81,6 +85,7 @@ const DeploymentStrategies = {
     },
     "vq-marketplace-platform": {
         "name": "API",
+        "folder": "vq-marketplace-api",
         "master": {
             "runSequence": [
                 {
@@ -110,6 +115,7 @@ const DeploymentStrategies = {
     },
     "vq-marketplace-web-app": {
         "name": "APP",
+        "folder": "vq-marketplace-web-app",
         "master": {
             "runSequence": [
                 {
@@ -143,6 +149,7 @@ const DeploymentStrategies = {
     },
     "vq-marketplace-landing-page": {
         "name": "LANDING PAGE",
+        "folder": "vq-marketplace-landing-page",
         "master": {
             "runSequence": [
                 {
@@ -172,6 +179,7 @@ const DeploymentStrategies = {
     },
     "vq-labs.com": {
         "name": "VQ-LABS.COM",
+        "folder": "vq-labs.com",
         "master": {
             "runSequence": [
                 {
@@ -201,6 +209,7 @@ const DeploymentStrategies = {
     },
     "vqmarketplace.com": {
         "name": "VQMARKETPLACE.COM",
+        "folder": "vqmarketplace.com",
         "master": {
             "runSequence": [
                 {
@@ -234,6 +243,7 @@ const deploy = (repoName, branchName) => {
     sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     const sequencePromises = DeploymentStrategies[repoName][branchName].runSequence.map(sequence => {
         return runCommand(
+            DeploymentStrategies[repoName].folder,
             sequence.command,
             sequence.args,
             (data, err) => {
