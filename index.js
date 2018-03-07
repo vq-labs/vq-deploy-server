@@ -45,7 +45,6 @@ const prependNameToMessage = (name, message) => {
 }
 
 console.log("test")
-console.log("test")
 
 
 const DeploymentStrategies = {
@@ -240,23 +239,23 @@ const deploy = (repoName, branchName) => {
             (data, err) => {
                 if (err) {
                     sendMessage(`
-                        --[ERROR][${sequence.name}][${branchName}@${repoName}] An error has occurred: ${err}
+                        --[ERROR][${sequence.module}][${branchName}@${repoName}] An error has occurred: ${err}
                     `)
                 }
 
                 sendMessage(`
-                        --[PROGRESS][${sequence.name}][${branchName}@${repoName}] Data: ${data}
+                        --[PROGRESS][${sequence.module}][${branchName}@${repoName}] Data: ${data}
                     `)
             },
             (code, reject, resolve) => {
                 if (code !== 0) {
                     sendMessage(`
-                        --[ERROR][${sequence.name}][${branchName}@${repoName}] Command was not completed. Please try again
+                        --[ERROR][${sequence.module}][${branchName}@${repoName}] Command was not completed. Please try again
                     `);
                     return reject()
                 } else {
                     sendMessage(`
-                        --[SUCCESS][${sequence.name}][${branchName}@${repoName}] ${sequence.successMessage}
+                        --[SUCCESS][${sequence.module}][${branchName}@${repoName}] ${sequence.successMessage}
                     `)
                     return resolve();
                 }
