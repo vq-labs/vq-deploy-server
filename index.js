@@ -40,7 +40,31 @@ const prependNameToMessage = (name, message) => {
     return `[${name}] ${message}`;
 }
 
+
+
 const DeploymentStrategies = {
+    "vq-deploy-server": {
+        "name": "DEPLOY SERVER",
+        "master": {
+            "runSequence": [
+                {
+                    "module": "GIT",
+                    "command": "git pull",
+                    "successMessage": "GIT pull completed"
+                },
+                {
+                    "module": "INSTALL",
+                    "command": "npm install",
+                    "successMessage": "Module installation completed"
+                },
+                {
+                    "module": "RUN",
+                    "command": "node index",
+                    "successMessage": "Server started running"
+                }
+            ]
+        }
+    },
     "vq-marketplace-platform": {
         "name": "API",
         "master": {
