@@ -56,8 +56,8 @@ console.log(pm2.list());
 
 
  http.createServer((req, res) => {
-
-    if (req.method === 'POST' && req.path === '/status') {
+    console.log('path', req.path);
+    if (req.method === 'POST' && req.path === '/deploy/status') {
         console.log('status pinged')
     }
 
