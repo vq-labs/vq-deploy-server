@@ -211,12 +211,12 @@ const deploy = (repoName, branchName) => {
 
 sendMessage(undefined, [
     {
-        "fallback": `[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`,
+        "fallback": `:heavy_check_mark: [VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`,
         "color": "good",
-        "title": `[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`
+        "title": `:heavy_check_mark: [VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`
     }
 ]);
-console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
+console.log(`:heavy_check_mark: [VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 
 handler.on('error', (err) => {
     sendMessage(undefined, [
