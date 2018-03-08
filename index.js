@@ -42,7 +42,7 @@ const DEPLOY_STATUSES = {
     "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
 }
 
-const sendMessage = (message = `\n`, attachments = []) => {
+const sendMessage = (message = `[DEPLOY]`, attachments = []) => {
     web.chat.postMessage(channelID, message, { attachments });
     console.log('[DEPLOY] Sending message to Slack', JSON.stringify({ message, attachments}, null, 2));
 }
