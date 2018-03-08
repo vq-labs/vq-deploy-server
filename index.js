@@ -63,8 +63,16 @@ const sendMessage = (message) => {
                 }
                 
                 pm2.list(function(err, process_list) {
-                    //res.statusCode = 200;
-                    console.log(process_list, err);
+                    const summary = process_list.map(process => {
+                        return {
+                            name: process.name,
+                            memory: process.monit.memory,
+                            cpu: process.monit.cpu,
+                            status: process.pm2_env.status,
+                            uptime: process.pm2_env.pm_uptime
+                        }
+                    })
+                    res.statusCode = 200;
                     return res.end(JSON.stringify(process_list));
                   });
               });
