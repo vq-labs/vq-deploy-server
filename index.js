@@ -98,9 +98,9 @@ const deploy = (repoName, branchName) => {
     if (repoName !== 'vq-deploy-server') {
         sendMessage(undefined, [
             {
-                "fallback": `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`,
+                "fallback": `:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`,
                 "color": "warning",
-                "title": `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`
+                "title": `:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`
             }
         ]);
         console.log(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
@@ -209,11 +209,24 @@ const deploy = (repoName, branchName) => {
     });
 }).listen(process.env.SERVER_PORT);
 
-sendMessage(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
+sendMessage(undefined, [
+    {
+        "fallback": `[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`,
+        "color": "good",
+        "title": `[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`
+    }
+]);
 console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 
 handler.on('error', (err) => {
-  console.error('Error:', err.message);
+    sendMessage(undefined, [
+        {
+            "fallback": `[VQ-DEPLOY-SERVER] An error has ocurred ${err.message}`,
+            "color": "danger",
+            "title": `[VQ-DEPLOY-SERVER] An error has ocurred ${err.message}`
+        }
+    ]);
+    console.log(`[VQ-DEPLOY-SERVER] An error has ocurred ${err.message}`);
 })
 
 handler.on('push', (event) => {
