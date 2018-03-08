@@ -96,7 +96,13 @@ function timeSince(date) {
 const deploy = (repoName, branchName) => {
 
     if (repoName !== 'vq-deploy-server') {
-        sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+        sendMessage(undefined, [
+            {
+                "fallback": `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`,
+                "color": "warning",
+                "title": `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`
+            }
+        ]);
         console.log(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     }
 
