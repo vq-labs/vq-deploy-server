@@ -38,7 +38,7 @@ const PM2_STATUSES = {
 }
 
 const sendMessage = (message, attachments = []) => {
-    web.chat.postMessage(channelID, message, attachments)
+    web.chat.postMessage(channelID, message, { attachments })
   .then((res) => {
     // `res` contains information about the posted message
     console.log('Message sent: ', res.ts, res);
