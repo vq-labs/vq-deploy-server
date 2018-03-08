@@ -17,33 +17,28 @@ const channelID = 'C9KDSG82C'; //#marketplace_status
 const PM2_STATUSES = {
     "online": {
         "color": "good",
-        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is running`
+        "message": (variables) => `:heavy_check_mark: [${variables.status.toUpperCase()}] ${variables.name} is running`
     },
     "stopped": {
         "color": "danger",
-        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is stopped`
+        "message": (variables) => `:heavy_exclamation_mark: [${variables.status.toUpperCase()}] ${variables.name} is stopped`
     },
     "stopping": {
         "color": "warning",
-        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is stopping`
+        "message": (variables) => `:interrobang: [${variables.status.toUpperCase()}] ${variables.name} is stopping`
     },
     "launching": {
         "color": "warning",
-        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is being launched`
+        "message": (variables) => `:interrobang: [${variables.status.toUpperCase()}] ${variables.name} is being launched`
     },
     "errored": {
         "color": "danger",
-        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} has been errored`
+        "message": (variables) => `:bangbang: [${variables.status.toUpperCase()}] ${variables.name} has been errored`
     }
 }
 
 const sendMessage = (message, attachments = []) => {
-    web.chat.postMessage(channelID, message, { attachments })
-  .then((res) => {
-    // `res` contains information about the posted message
-    console.log('Message sent: ', res.ts, res);
-  })
-  .catch(console.error);
+    web.chat.postMessage(channelID, message, { attachments });
 }
 
 function humanFileSize(bytes, si) {
@@ -179,7 +174,7 @@ function timeSince(date) {
                             }
                         }
                     })
-                    sendMessage(`[SERVER STATUS] Listing all PM2 instances`, attachments);
+                    sendMessage(`*[SERVER STATUS]* Listing all PM2 instances`, attachments);
                     res.statusCode = 200;
                     return res.end(JSON.stringify(processSummaries));
                   });
