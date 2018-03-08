@@ -138,7 +138,7 @@ const sendMessage = (message, attachments = []) => {
                         test
                     `, attachments);
                     res.statusCode = 200;
-                    return res.end(JSON.stringify(summary));
+                    return res.end(JSON.stringify(processSummaries));
                   });
               });
         } else {
