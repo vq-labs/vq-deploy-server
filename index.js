@@ -46,13 +46,21 @@ const sendMessage = (message, attachments = []) => {
   .catch(console.error);
 }
 
-function bytesToSize(bytes) {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    if (bytes === 0) return 'n/a'
-    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
-    if (i === 0) return `${bytes} ${sizes[i]})`
-    return `${(bytes / (1024 * i)).toFixed(1)} ${sizes[i]}`
-  }
+function humanFileSize(bytes, si) {
+    var thresh = si ? 1000 : 1024;
+    if(Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+    }
+    var units = si
+        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
+        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+    var u = -1;
+    do {
+        bytes /= thresh;
+        ++u;
+    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
+    return bytes.toFixed(1)+' '+units[u];
+}
 
 const convertMillisToTime = (millis) => {
     let delim = " ";
@@ -109,7 +117,7 @@ const convertMillisToTime = (millis) => {
                     const processSummaries = process_list.map(process => {
                         return {
                             name: process.name,
-                            memory: bytesToSize(process.monit.memory),
+                            memory: humanFileSize(process.monit.memory),
                             memoryRaw: process.monit.memory,
                             cpu: `${process.monit.cpu}%`,
                             status: process.pm2_env.status,
