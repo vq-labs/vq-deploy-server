@@ -1,0 +1,33 @@
+{
+    "vq-deploy-server": {
+        "name": "DEPLOY SERVER",
+        "folder": "vq-deploy-server",
+        "master": "deploy.sh"
+    },
+    "vq-marketplace-platform": {
+        "name": "API",
+        "folder": "vq-marketplace-api",
+        "master": "deploy.sh"
+    },
+    "vq-marketplace-web-app": {
+        "name": "APP",
+        "folder": "vq-marketplace-web-app",
+        "master": "deploy.sh"
+    },
+    "vq-marketplace-landing-page": {
+        "name": "LANDING PAGE",
+        "folder": "vq-marketplace-landing-page",
+        "master": "deploy.sh",
+        "VM-32": "deploy.sh"
+    },
+    "vq-labs.com": {
+        "name": "VQ-LABS.COM",
+        "folder": "vq-labs.com",
+        "master": "deploy.sh"
+    },
+    "vqmarketplace.com": {
+        "name": "VQMARKETPLACE.COM",
+        "folder": "vqmarketplace.com",
+        "VM-32": "deploy.sh"
+    }
+}

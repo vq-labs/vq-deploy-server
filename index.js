@@ -8,49 +8,29 @@ const spawn = require('child_process').spawn;
 const exec = require('child_process').exec;
 const Promise = require("bluebird");
 const handler = createHandler({ path: process.env.GITHUB_HOOK_PATH, secret: process.env.GITHUB_HOOK_SECRET });
-const { IncomingWebhook } = require('@slack/client');
-const webhook = new IncomingWebhook(process.env.SLACK_HOOK_URL);
+const { WebClient } = require('@slack/client');
+const web = new WebClient(process.env.SLACK_API_TOKEN);
+const DeploymentStrategies = require('./DeploymentStrategies.json');
+const pm2 = require('pm2');
+const channelID = 'C9KDSG82C'; //#marketplace_status
 
 const sendMessage = (message) => {
-    webhook.send(message);
+    web.chat.postMessage(channelID, message)
+  .then((res) => {
+    // `res` contains information about the posted message
+    console.log('Message sent: ', res.ts, res);
+  })
+  .catch(console.error);
 }
 
-const DeploymentStrategies = {
-    "vq-deploy-server": {
-        "name": "DEPLOY SERVER",
-        "folder": "vq-deploy-server",
-        "master": "deploy.sh"
-    },
-    "vq-marketplace-platform": {
-        "name": "API",
-        "folder": "vq-marketplace-api",
-        "master": "deploy.sh"
-    },
-    "vq-marketplace-web-app": {
-        "name": "APP",
-        "folder": "vq-marketplace-web-app",
-        "master": "deploy.sh"
-    },
-    "vq-marketplace-landing-page": {
-        "name": "LANDING PAGE",
-        "folder": "vq-marketplace-landing-page",
-        "master": "deploy.sh",
-        "VM-32": "deploy.sh"
-    },
-    "vq-labs.com": {
-        "name": "VQ-LABS.COM",
-        "folder": "vq-labs.com",
-        "master": "deploy.sh"
-    },
-    "vqmarketplace.com": {
-        "name": "VQMARKETPLACE.COM",
-        "folder": "vqmarketplace.com",
-        "VM-32": "deploy.sh"
-    }
-}
+console.log(pm2.list());
 
-const deploy = (repoName, branchName) => {
+//sendMessage(`:grey_exclamation: [DEPLOY][${"test"}@${"test2"}] Started running deployment scripts...`);
+
+/* const deploy = (repoName, branchName) => {
+
     sendMessage(`:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+
     const folder = DeploymentStrategies[repoName].folder;
     const file = DeploymentStrategies[repoName][branchName];
 
@@ -72,10 +52,10 @@ const deploy = (repoName, branchName) => {
             }
         }
     );
-};
+}; */
 
 
-http.createServer((req, res) => {
+/* http.createServer((req, res) => {
     handler(req, res, (err) => {
         res.statusCode = 404
         res.end('no such location')
@@ -93,4 +73,4 @@ handler.on('push', (event) => {
     const branchName = event.payload.ref.replace("refs/heads/", "");
 
     deploy(repoName, branchName);
-});
+}); */
