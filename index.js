@@ -46,6 +46,17 @@ const sendMessage = (message, attachments = []) => {
   .catch(console.error);
 }
 
+const convertMillisToTime = (millis) => {
+    let delim = " ";
+    let hours = Math.floor(millis / (1000 * 60 * 60) % 60);
+    let minutes = Math.floor(millis / (1000 * 60) % 60);
+    let seconds = Math.floor(millis / 1000 % 60);
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+    return hours + 'h'+ delim + minutes + 'm' + delim + seconds + 's';
+}
+
 //sendMessage(`:grey_exclamation: [DEPLOY][${"test"}@${"test2"}] Started running deployment scripts...`);
 
 /* const deploy = (repoName, branchName) => {
@@ -93,7 +104,7 @@ const sendMessage = (message, attachments = []) => {
                             memory: process.monit.memory,
                             cpu: process.monit.cpu,
                             status: process.pm2_env.status,
-                            uptime: process.pm2_env.pm_uptime
+                            uptime: convertMillisToTime(process.pm2_env.pm_uptime)
                         }
                     });
 
@@ -102,7 +113,7 @@ const sendMessage = (message, attachments = []) => {
                             return {
                                 "fallback": PM2_STATUSES[process.status].message(process),
                                 "color": PM2_STATUSES[process.status].color,
-                                "title": process.name,
+                                "title": PM2_STATUSES[process.status].message(process),
                                 "fields": [
                                     {
                                         "title": "Memory",
@@ -134,9 +145,7 @@ const sendMessage = (message, attachments = []) => {
                             }
                         }
                     })
-                    sendMessage(`
-                        test
-                    `, attachments);
+                    sendMessage(``, attachments);
                     res.statusCode = 200;
                     return res.end(JSON.stringify(processSummaries));
                   });
