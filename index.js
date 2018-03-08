@@ -17,7 +17,7 @@ const channelID = 'C9KDSG82C'; //#marketplace_status
 const PM2_STATUSES = {
     "online": {
         "color": "good",
-        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} has been running for ${variables.uptime} with ${variables.cpu} CPU and ${variables.memory} RAM usage`
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is running`
     },
     "stopped": {
         "color": "danger",
