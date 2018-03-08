@@ -42,7 +42,7 @@ const DEPLOY_STATUSES = {
     "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
 }
 
-const sendMessage = (message = `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`, attachments = []) => {
+const sendMessage = (message = `\n`, attachments = []) => {
     web.chat.postMessage(channelID, message, { attachments });
     console.log('[DEPLOY] Sending message to Slack', JSON.stringify({ message, attachments}, null, 2));
 }
@@ -96,7 +96,7 @@ function timeSince(date) {
 const deploy = (repoName, branchName) => {
 
     if (repoName !== 'vq-deploy-server') {
-        sendMessage();
+        sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
         console.log(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     }
 
