@@ -62,11 +62,11 @@ const sendMessage = (message) => {
                   process.exit(2);
                 }
                 
-                pm2.dump((err, result) => {
+                pm2.list(function(err, process_list) {
                     //res.statusCode = 200;
-                    console.log(result, err);
-                    return res.end(result);
-                });
+                    console.log(process_list, err);
+                    return res.end(process_list);
+                  });
               });
         }
         res.statusCode = 404
