@@ -56,10 +56,13 @@ const sendMessage = (message) => {
  http.createServer((req, res) => {
     handler(req, res, (err) => {
         if (req.method === 'POST' && req.url === '/status') {
-            res.end(pm2.list());
+            return pm2.dump((err, result) => {
+                res.statusCode = 200;
+                res.end(result);
+            });
         }
         res.statusCode = 404
-        res.end('no such location')
+        return res.end('no such location')
     });
 }).listen(process.env.SERVER_PORT);
 
