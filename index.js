@@ -23,8 +23,6 @@ const sendMessage = (message) => {
   .catch(console.error);
 }
 
-console.log(pm2.list());
-
 //sendMessage(`:grey_exclamation: [DEPLOY][${"test"}@${"test2"}] Started running deployment scripts...`);
 
 /* const deploy = (repoName, branchName) => {
@@ -59,6 +57,7 @@ console.log(pm2.list());
     console.log('path', req.path);
     if (req.method === 'POST' && req.path === '/deploy/status') {
         console.log('status pinged')
+        //console.log(pm2.list());
     }
 
     handler(req, res, (err) => {
