@@ -56,11 +56,18 @@ const sendMessage = (message) => {
  http.createServer((req, res) => {
     handler(req, res, (err) => {
         if (req.method === 'POST' && req.url === '/status') {
-            pm2.dump((err, result) => {
-                //res.statusCode = 200;
-                console.log(result, err);
-                return res.end(result);
-            });
+            return pm2.connect((err) => {
+                if (err) {
+                  console.error(err);
+                  process.exit(2);
+                }
+                
+                pm2.dump((err, result) => {
+                    //res.statusCode = 200;
+                    console.log(result, err);
+                    return res.end(result);
+                });
+              });
         }
         res.statusCode = 404
         return res.end('no such location')
