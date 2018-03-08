@@ -61,6 +61,7 @@ const sendMessage = (message) => {
     }
 
     handler(req, res, (err) => {
+        console.log(req)
         res.statusCode = 404
         res.end('no such location')
     });
