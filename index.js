@@ -161,7 +161,7 @@ function timeSince(date) {
                                     },
                                     {
                                         "title": "Status",
-                                        "value": process.status,
+                                        "value": process.status.replace(/\b\w/g, l => l.toUpperCase()),
                                         "short": false
                                     },
                                     {
@@ -179,7 +179,7 @@ function timeSince(date) {
                             }
                         }
                     })
-                    sendMessage(``, attachments);
+                    sendMessage(`[SERVER STATUS] Listing all PM2 instances`, attachments);
                     res.statusCode = 200;
                     return res.end(JSON.stringify(processSummaries));
                   });
