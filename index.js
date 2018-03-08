@@ -73,7 +73,7 @@ const sendMessage = (message) => {
                         }
                     })
                     res.statusCode = 200;
-                    return res.end(JSON.stringify(process_list));
+                    return res.end(JSON.stringify(summary));
                   });
               });
         } else {
