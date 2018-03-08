@@ -62,16 +62,33 @@ function humanFileSize(bytes, si) {
     return bytes.toFixed(1)+' '+units[u];
 }
 
-const convertMillisToTime = (millis) => {
-    let delim = " ";
-    let hours = Math.floor(millis / (1000 * 60 * 60) % 60);
-    let minutes = Math.floor(millis / (1000 * 60) % 60);
-    let seconds = Math.floor(millis / 1000 % 60);
-    hours = hours < 10 ? '0' + hours : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-    return hours + 'h'+ delim + minutes + 'm' + delim + seconds + 's';
-}
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+  
+    var interval = Math.floor(seconds / 31536000);
+  
+    if (interval > 1) {
+      return interval + 'Y';
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+      return interval + 'M';
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+      return interval + 'D';
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+      return interval + 'h';
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+      return interval + 'm';
+    }
+    return Math.floor(seconds) + 's';
+  }
 
 //sendMessage(`:grey_exclamation: [DEPLOY][${"test"}@${"test2"}] Started running deployment scripts...`);
 
@@ -121,8 +138,7 @@ const convertMillisToTime = (millis) => {
                             memoryRaw: process.monit.memory,
                             cpu: `${process.monit.cpu}%`,
                             status: process.pm2_env.status,
-                            uptime: convertMillisToTime(process.pm2_env.pm_uptime),
-                            uptimeRaw: process.pm2_env.pm_uptime
+                            uptime: timeSince(process.pm2_env.pm_uptime)
                         }
                     });
 
