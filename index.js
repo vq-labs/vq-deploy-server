@@ -38,7 +38,7 @@ const PM2_STATUSES = {
 }
 
 const DEPLOY_STATUSES = {
-    "good": (repoName, branchName) => `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
+    "good": (repoName, branchName, start) => `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
     "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
 }
 
@@ -118,9 +118,9 @@ const deploy = (repoName, branchName) => {
                 return sendMessage(``, { attachments })
             } else {
                 attachments.push({
-                    "fallback": DEPLOY_STATUSES.good(repoName, branchName),
+                    "fallback": DEPLOY_STATUSES.good(repoName, branchName, start),
                     "color": "good",
-                    "title": DEPLOY_STATUSES.good(repoName, branchName)
+                    "title": DEPLOY_STATUSES.good(repoName, branchName, start)
                 });
                 return sendMessage(``, { attachments })
             }
