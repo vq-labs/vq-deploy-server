@@ -1,0 +1,40 @@
+const pm2 = require('pm2');
+
+const MessageHandler = require('./MessageHandlerClass');
+
+const utils = require('../utils');
+
+// Connect to pm2 instance running on the server
+export default function(res) {
+    return pm2.connect((connectError) => {
+        if (connectError) {
+            console.error(connectError);
+            process.exit(2);
+        }
+        
+        return pm2.list((listError, processList) => {
+            if (listError) {
+                console.error(listError);
+                process.exit(2);
+            }
+    
+            // Get only the variables we want
+            const trimmedProcessList = processList.map(runningProcess => {
+                // We use runningProcess variable instead of process because process is a global variable. Just in case
+                return {
+                    name: runningProcess.name,
+                    memory: utils.readableFileSize(runningProcess.monit.memory),
+                    memoryRaw: runningProcess.monit.memory,
+                    cpu: `${runningProcess.monit.cpu}%`,
+                    status: runningProcess.pm2_env.status,
+                    uptime: utils.readableTime(runningProcess.pm2_env.pm_uptime)
+                }
+            });
+    
+            MessageHandler.writeStatusMessage(trimmedProcessList);
+    
+            res.statusCode = 200;
+            return res.end(JSON.stringify(runningProcess, null, 2));
+        });
+    });
+}
