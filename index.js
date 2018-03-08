@@ -42,8 +42,9 @@ const DEPLOY_STATUSES = {
     "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
 }
 
-const sendMessage = (message = "[VQ-DEPLOY-SERVER]", attachments = []) => {
+const sendMessage = (message = `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`, attachments = []) => {
     web.chat.postMessage(channelID, message, { attachments });
+    console.log('[DEPLOY] Sending message to Slack', JSON.stringify({ message, attachments}, null, 2));
 }
 
 function humanFileSize(bytes, si) {
@@ -95,7 +96,8 @@ function timeSince(date) {
 const deploy = (repoName, branchName) => {
 
     if (repoName !== 'vq-deploy-server') {
-        sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+        sendMessage();
+        console.log(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
     }
 
     const folder = DeploymentStrategies[repoName].folder;
@@ -115,14 +117,14 @@ const deploy = (repoName, branchName) => {
                     "color": "danger",
                     "title": DEPLOY_STATUSES.danger(repoName, branchName)
                 });
-                return sendMessage(``, { attachments })
+                return sendMessage(undefined, { attachments })
             } else {
                 attachments.push({
                     "fallback": DEPLOY_STATUSES.good(repoName, branchName, start),
                     "color": "good",
                     "title": DEPLOY_STATUSES.good(repoName, branchName, start)
                 });
-                return sendMessage(``, { attachments })
+                return sendMessage(undefined, { attachments })
             }
         }
     );
@@ -189,6 +191,7 @@ const deploy = (repoName, branchName) => {
                         }
                     })
                     sendMessage(`*[SERVER STATUS]* Listing all PM2 instances`, attachments);
+                    console.log(`*[SERVER STATUS]* Listing all PM2 instances`, JSON.stringify(processSummaries, null ,2));
                     res.statusCode = 200;
                     return res.end();
                   });
@@ -200,6 +203,7 @@ const deploy = (repoName, branchName) => {
     });
 }).listen(process.env.SERVER_PORT);
 
+sendMessage(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 
 handler.on('error', (err) => {
