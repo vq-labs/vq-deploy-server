@@ -176,7 +176,7 @@ function timeSince(date) {
                     })
                     sendMessage(`*[SERVER STATUS]* Listing all PM2 instances`, attachments);
                     res.statusCode = 200;
-                    return res.end(JSON.stringify(processSummaries));
+                    return res.end();
                   });
               });
         } else {
