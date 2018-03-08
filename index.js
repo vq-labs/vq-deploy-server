@@ -89,10 +89,15 @@ function timeSince(date) {
 
 const deploy = (repoName, branchName) => {
 
-    sendMessage(`:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
 
     const folder = DeploymentStrategies[repoName].folder;
     const file = DeploymentStrategies[repoName][branchName];
+
+    
+    
+
+    const attachments = [];
 
     const start = new Date().getTime();
     exec(
@@ -102,13 +107,19 @@ const deploy = (repoName, branchName) => {
             console.log(`${stdout}`);
             console.log(`${stderr}`);
             if (error !== null) {
-                return sendMessage(`
-                :x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}
-            `)
+                attachments.push({
+                    "fallback": `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
+                    "color": "danger",
+                    "title": `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`
+                });
+                return sendMessage(``, { attachments })
             } else {
-                return sendMessage(`
-                :heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds
-            `)
+                attachments.push({
+                    "fallback": `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
+                    "color": "good",
+                    "title": `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`
+                });
+                return sendMessage(``, { attachments })
             }
         }
     );
