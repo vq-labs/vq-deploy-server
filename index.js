@@ -37,7 +37,12 @@ const PM2_STATUSES = {
     }
 }
 
-const sendMessage = (message, attachments = []) => {
+const DEPLOY_STATUSES = {
+    "good": (repoName, branchName) => `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
+    "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
+}
+
+const sendMessage = (message = "[VQ-DEPLOY-SERVER]", attachments = []) => {
     web.chat.postMessage(channelID, message, { attachments });
 }
 
@@ -106,16 +111,16 @@ const deploy = (repoName, branchName) => {
             console.log(`${stderr}`);
             if (error !== null) {
                 attachments.push({
-                    "fallback": `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
+                    "fallback": DEPLOY_STATUSES.danger(repoName, branchName),
                     "color": "danger",
-                    "title": `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`
+                    "title": DEPLOY_STATUSES.danger(repoName, branchName)
                 });
                 return sendMessage(``, { attachments })
             } else {
                 attachments.push({
-                    "fallback": `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
+                    "fallback": DEPLOY_STATUSES.good(repoName, branchName),
                     "color": "good",
-                    "title": `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`
+                    "title": DEPLOY_STATUSES.good(repoName, branchName)
                 });
                 return sendMessage(``, { attachments })
             }
