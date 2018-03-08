@@ -57,9 +57,10 @@ const sendMessage = (message) => {
     handler(req, res, (err) => {
         if (req.method === 'POST' && req.url === '/status') {
             pm2.dump((err, result) => {
-                res.statusCode = 200;
+                //res.statusCode = 200;
                 console.log(result);
-                return res.end(result);
+                res.write(result);
+                return res.end();
             });
         }
         res.statusCode = 404
