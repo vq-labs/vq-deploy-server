@@ -14,8 +14,31 @@ const DeploymentStrategies = require('./DeploymentStrategies.json');
 const pm2 = require('pm2');
 const channelID = 'C9KDSG82C'; //#marketplace_status
 
-const sendMessage = (message) => {
-    web.chat.postMessage(channelID, message)
+const PM2_STATUSES = {
+    "online": {
+        "color": "good",
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} has been running for ${variables.uptime} with ${variables.cpu} CPU and ${variables.memory} RAM usage`
+    },
+    "stopped": {
+        "color": "danger",
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is stopped`
+    },
+    "stopping": {
+        "color": "warning",
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is stopping`
+    },
+    "launching": {
+        "color": "warning",
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is being launched`
+    },
+    "errored": {
+        "color": "danger",
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} has been errored`
+    }
+}
+
+const sendMessage = (message, attachments = []) => {
+    web.chat.postMessage(channelID, message, attachments)
   .then((res) => {
     // `res` contains information about the posted message
     console.log('Message sent: ', res.ts, res);
@@ -63,7 +86,44 @@ const sendMessage = (message) => {
                 }
                 
                 pm2.list(function(err, process_list) {
+
+                    const attachments = [];
                     const summary = process_list.map(process => {
+                        if (process.status === 'online') {
+                            attachments.push({
+                                "fallback": PM2_STATUSES[process.status].message(process),
+                                "color": PM2_STATUSES[process.status].color,
+                                "title": process.name,
+                                "fields": [
+                                    {
+                                        "title": "Memory",
+                                        "value": process.monit.memory,
+                                        "short": false
+                                    },
+                                    {
+                                        "title": "CPU",
+                                        "value": process.monit.cpu,
+                                        "short": false
+                                    },
+                                    {
+                                        "title": "Status",
+                                        "value": process.pm2_env.status,
+                                        "short": false
+                                    },
+                                    {
+                                        "title": "Uptime",
+                                        "value": process.pm2_env.pm2_uptime,
+                                        "short": false
+                                    }
+                                ]
+                            })
+                        } else {
+                            attachments.push({
+                                "fallback": PM2_STATUSES[process.status].message(process),
+                                "color": PM2_STATUSES[process.status].color,
+                                "title": PM2_STATUSES[process.status].message(process)
+                            })
+                        }
                         return {
                             name: process.name,
                             memory: process.monit.memory,
@@ -71,7 +131,10 @@ const sendMessage = (message) => {
                             status: process.pm2_env.status,
                             uptime: process.pm2_env.pm_uptime
                         }
-                    })
+                    });
+                    sendMessage(`
+                        test
+                    `, attachments);
                     res.statusCode = 200;
                     return res.end(JSON.stringify(summary));
                   });
