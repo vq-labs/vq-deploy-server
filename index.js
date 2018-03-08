@@ -46,6 +46,14 @@ const sendMessage = (message, attachments = []) => {
   .catch(console.error);
 }
 
+function bytesToSize(bytes) {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    if (bytes === 0) return 'n/a'
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+    if (i === 0) return `${bytes} ${sizes[i]})`
+    return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`
+  }
+
 const convertMillisToTime = (millis) => {
     let delim = " ";
     let hours = Math.floor(millis / (1000 * 60 * 60) % 60);
@@ -101,8 +109,8 @@ const convertMillisToTime = (millis) => {
                     const processSummaries = process_list.map(process => {
                         return {
                             name: process.name,
-                            memory: process.monit.memory,
-                            cpu: process.monit.cpu,
+                            memory: bytesToSize(process.monit.memory),
+                            cpu: `${process.monit.cpu}%`,
                             status: process.pm2_env.status,
                             uptime: convertMillisToTime(process.pm2_env.pm_uptime)
                         }
