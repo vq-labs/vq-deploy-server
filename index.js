@@ -89,14 +89,12 @@ function timeSince(date) {
 
 const deploy = (repoName, branchName) => {
 
-    sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    if (repoName !== 'vq-deploy-server') {
+        sendMessage(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
+    }
 
     const folder = DeploymentStrategies[repoName].folder;
-    const file = DeploymentStrategies[repoName][branchName];
-
-    
-    
-
+    const file = DeploymentStrategies[repoName][branchName];    
     const attachments = [];
 
     const start = new Date().getTime();
