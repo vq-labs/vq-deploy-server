@@ -54,14 +54,10 @@ const sendMessage = (message) => {
 
 
  http.createServer((req, res) => {
-    console.log('path', req.path);
-    if (req.method === 'POST' && req.path === '/deploy/status') {
-        console.log('status pinged')
-        //console.log(pm2.list());
-    }
-
     handler(req, res, (err) => {
-        console.log(req)
+        if (req.method === 'POST' && req.url === '/status') {
+            res.end(pm2.list());
+        }
         res.statusCode = 404
         res.end('no such location')
     });
