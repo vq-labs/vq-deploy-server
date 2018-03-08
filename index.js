@@ -65,13 +65,12 @@ const sendMessage = (message) => {
                 pm2.list(function(err, process_list) {
                     //res.statusCode = 200;
                     console.log(process_list, err);
-                    res.end(process_list);
-                    return;
+                    return res.end(JSON.stringify(process_list));
                   });
               });
         } else {
             res.statusCode = 404
-            res.end('no such location')
+            return res.end('no such location')
         }
     });
 }).listen(process.env.SERVER_PORT);
