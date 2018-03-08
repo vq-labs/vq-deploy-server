@@ -17,29 +17,29 @@ const channelID = 'C9KDSG82C'; //#marketplace_status
 const PM2_STATUSES = {
     "online": {
         "color": "good",
-        "message": (variables) => `:heavy_check_mark: [${variables.status.toUpperCase()}] ${variables.name} is running`
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is running`
     },
     "stopped": {
         "color": "danger",
-        "message": (variables) => `:heavy_exclamation_mark: [${variables.status.toUpperCase()}] ${variables.name} is stopped`
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is stopped`
     },
     "stopping": {
         "color": "warning",
-        "message": (variables) => `:interrobang: [${variables.status.toUpperCase()}] ${variables.name} is stopping`
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is stopping`
     },
     "launching": {
         "color": "warning",
-        "message": (variables) => `:interrobang: [${variables.status.toUpperCase()}] ${variables.name} is being launched`
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} is being launched`
     },
     "errored": {
         "color": "danger",
-        "message": (variables) => `:bangbang: [${variables.status.toUpperCase()}] ${variables.name} has been errored`
+        "message": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} has been errored`
     }
 }
 
 const DEPLOY_STATUSES = {
-    "good": (repoName, branchName, start) => `:heavy_check_mark: [DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
-    "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
+    "good": (repoName, branchName, start) => `[DEPLOY][${branchName}@${repoName}] Deploy completed in ${new Date().getTime() - start} miliseconds`,
+    "danger": (repoName, branchName) => `[DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
 }
 
 const sendMessage = (message = ``, attachments = []) => {
@@ -98,9 +98,9 @@ const deploy = (repoName, branchName) => {
     if (repoName !== 'vq-deploy-server') {
         sendMessage(undefined, [
             {
-                "fallback": `:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`,
+                "fallback": `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`,
                 "color": "warning",
-                "title": `:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`
+                "title": `[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`
             }
         ]);
         console.log(`[DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
@@ -211,12 +211,12 @@ const deploy = (repoName, branchName) => {
 
 sendMessage(undefined, [
     {
-        "fallback": `:heavy_check_mark: [VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`,
+        "fallback": `[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`,
         "color": "good",
-        "title": `:heavy_check_mark: [VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`
+        "title": `[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`
     }
 ]);
-console.log(`:heavy_check_mark: [VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
+console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 
 handler.on('error', (err) => {
     sendMessage(undefined, [
