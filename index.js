@@ -42,7 +42,7 @@ const DEPLOY_STATUSES = {
     "danger": (repoName, branchName) => `:x: [DEPLOY][${branchName}@${repoName}] Deploy failed. Error: ${error}`,
 }
 
-const sendMessage = (message = `[DEPLOY]`, attachments = []) => {
+const sendMessage = (message = ``, attachments = []) => {
     web.chat.postMessage(channelID, message, { attachments });
     console.log('[DEPLOY] Sending message to Slack', JSON.stringify({ message, attachments}, null, 2));
 }
@@ -117,14 +117,14 @@ const deploy = (repoName, branchName) => {
                     "color": "danger",
                     "title": DEPLOY_STATUSES.danger(repoName, branchName)
                 });
-                return sendMessage(undefined, { attachments })
+                return sendMessage(undefined, attachments)
             } else {
                 attachments.push({
                     "fallback": DEPLOY_STATUSES.good(repoName, branchName, start),
                     "color": "good",
                     "title": DEPLOY_STATUSES.good(repoName, branchName, start)
                 });
-                return sendMessage(undefined, { attachments })
+                return sendMessage(undefined, attachments)
             }
         }
     );
