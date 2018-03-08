@@ -85,9 +85,9 @@ function timeSince(date) {
     return Math.floor(seconds) + 's';
   }
 
-//sendMessage(`:grey_exclamation: [DEPLOY][${"test"}@${"test2"}] Started running deployment scripts...`);
 
-/* const deploy = (repoName, branchName) => {
+
+const deploy = (repoName, branchName) => {
 
     sendMessage(`:grey_exclamation: [DEPLOY][${branchName}@${repoName}] Started running deployment scripts...`);
 
@@ -112,7 +112,7 @@ function timeSince(date) {
             }
         }
     );
-}; */
+};
 
 
  http.createServer((req, res) => {
@@ -186,7 +186,7 @@ function timeSince(date) {
     });
 }).listen(process.env.SERVER_PORT);
 
-/*console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
+console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 
 handler.on('error', (err) => {
   console.error('Error:', err.message);
@@ -197,4 +197,4 @@ handler.on('push', (event) => {
     const branchName = event.payload.ref.replace("refs/heads/", "");
 
     deploy(repoName, branchName);
-}); */
+});
