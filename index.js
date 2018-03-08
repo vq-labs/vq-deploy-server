@@ -106,22 +106,22 @@ const sendMessage = (message, attachments = []) => {
                                 "fields": [
                                     {
                                         "title": "Memory",
-                                        "value": process.monit.memory,
+                                        "value": process.memory,
                                         "short": false
                                     },
                                     {
                                         "title": "CPU",
-                                        "value": process.monit.cpu,
+                                        "value": process.cpu,
                                         "short": false
                                     },
                                     {
                                         "title": "Status",
-                                        "value": process.pm2_env.status,
+                                        "value": process.status,
                                         "short": false
                                     },
                                     {
                                         "title": "Uptime",
-                                        "value": process.pm2_env.pm2_uptime,
+                                        "value": process.uptime,
                                         "short": false
                                     }
                                 ]
