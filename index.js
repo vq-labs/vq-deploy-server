@@ -110,9 +110,11 @@ const convertMillisToTime = (millis) => {
                         return {
                             name: process.name,
                             memory: bytesToSize(process.monit.memory),
+                            memoryRaw: process.monit.memory,
                             cpu: `${process.monit.cpu}%`,
                             status: process.pm2_env.status,
-                            uptime: convertMillisToTime(process.pm2_env.pm_uptime)
+                            uptime: convertMillisToTime(process.pm2_env.pm_uptime),
+                            uptimeRaw: process.pm2_env.pm_uptime
                         }
                     });
 
