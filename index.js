@@ -56,10 +56,10 @@ const sendMessage = (message) => {
  http.createServer((req, res) => {
     handler(req, res, (err) => {
         if (req.method === 'POST' && req.url === '/status') {
-            return pm2.dump((err, result) => {
+            pm2.dump((err, result) => {
                 res.statusCode = 200;
                 console.log(result);
-                res.end(result);
+                return res.end(result);
             });
         }
         res.statusCode = 404
