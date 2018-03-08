@@ -87,10 +87,19 @@ const sendMessage = (message, attachments = []) => {
                 
                 pm2.list(function(err, process_list) {
 
-                    const attachments = [];
-                    const summary = process_list.map(process => {
+                    const processSummaries = process_list.map(process => {
+                        return {
+                            name: process.name,
+                            memory: process.monit.memory,
+                            cpu: process.monit.cpu,
+                            status: process.pm2_env.status,
+                            uptime: process.pm2_env.pm_uptime
+                        }
+                    });
+
+                    const attachments = processSummaries.map(process => {
                         if (process.status === 'online') {
-                            attachments.push({
+                            return {
                                 "fallback": PM2_STATUSES[process.status].message(process),
                                 "color": PM2_STATUSES[process.status].color,
                                 "title": process.name,
@@ -116,22 +125,15 @@ const sendMessage = (message, attachments = []) => {
                                         "short": false
                                     }
                                 ]
-                            })
+                            }
                         } else {
-                            attachments.push({
+                            return {
                                 "fallback": PM2_STATUSES[process.status].message(process),
                                 "color": PM2_STATUSES[process.status].color,
                                 "title": PM2_STATUSES[process.status].message(process)
-                            })
+                            }
                         }
-                        return {
-                            name: process.name,
-                            memory: process.monit.memory,
-                            cpu: process.monit.cpu,
-                            status: process.pm2_env.status,
-                            uptime: process.pm2_env.pm_uptime
-                        }
-                    });
+                    })
                     sendMessage(`
                         test
                     `, attachments);
