@@ -55,14 +55,19 @@ console.log(pm2.list());
 }; */
 
 
-/* http.createServer((req, res) => {
+ http.createServer((req, res) => {
+
+    if (req.method === 'POST' && req.path === '/status') {
+        console.log('status pinged')
+    }
+
     handler(req, res, (err) => {
         res.statusCode = 404
         res.end('no such location')
     });
 }).listen(process.env.SERVER_PORT);
 
-console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
+/*console.log(`[VQ-DEPLOY-SERVER] has started running on port ${process.env.SERVER_PORT}`);
 
 handler.on('error', (err) => {
   console.error('Error:', err.message);
