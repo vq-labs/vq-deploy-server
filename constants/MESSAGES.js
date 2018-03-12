@@ -1,13 +1,11 @@
-export default {
-    // Title is common on all objects so we'll use that that for console.log
+module.exports = {
+    // Title is common on all objects so we'll use that for console.log
     "server": {
         "start": {
-            "fallback": (variables) => `[${variables.appName}] has started running on port ${variables.port}`,
             "title": (variables) => `[${variables.appName}] has started running on port ${variables.port}`,
             "color": "good"
         },
         "error": {
-            "fallback": (variables) => `[${variables.appName}] An error has ocurred ${variables.error}`,
             "title": (variables) => `[${variables.appName}] An error has ocurred ${variables.error}`,
             "color": "danger"
         },
@@ -33,7 +31,7 @@ export default {
                 "title": (variables) => `[${variables.status.toUpperCase()}] ${variables.name} has been errored`,
                 "color": "danger"
             },
-            "mergeFields": (process) => {
+            "details": (process) => {
                     return [
                         {
                             "title": "Memory",
@@ -61,17 +59,14 @@ export default {
     },
     "runtime": {
         "start": {
-            "fallback": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Started running deployment scripts...`,
             "title": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Started running deployment scripts...`,
             "color": "warning"
         },  
         "error": {
-            "fallback": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Deploy failed. Error: ${variables.error}`,
             "title": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Deploy failed. Error: ${variables.error}`,
             "color": "danger"
         },
         "success": {
-            "fallback": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Deploy completed in ${variables.endTime - variables.startTime} miliseconds`,
             "title": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Deploy completed in ${variables.endTime - variables.startTime} miliseconds`,
             "color": "good"
         }

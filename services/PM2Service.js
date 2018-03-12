@@ -1,11 +1,11 @@
 const pm2 = require('pm2');
 
-const MessageHandler = require('./MessageHandlerClass');
+const MessageService = require('./MessageService');
 
 const utils = require('../utils');
 
 // Connect to pm2 instance running on the server
-export default function(res) {
+module.exports = function(res) {
     return pm2.connect((connectError) => {
         if (connectError) {
             console.error(connectError);
@@ -31,8 +31,10 @@ export default function(res) {
                 }
             });
     
-            MessageHandler.writeStatusMessage(trimmedProcessList);
+            // Build and send the status of servers to Slack
+            MessageService.writeStatusMessage(trimmedProcessList);
     
+            // Also return the status of servers as a response
             res.statusCode = 200;
             return res.end(JSON.stringify(runningProcess, null, 2));
         });

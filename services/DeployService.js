@@ -1,11 +1,11 @@
 const fs = require('fs');
 const appRoot = require('app-root-path').path;
 
-const DeploymentStrategies = require('./DeploymentStrategies.json');
+const DeploymentStrategies = require('../constants/DeploymentStrategies.json');
 
-const MessageHandler = require('./MessageHandlerClass');
+const MessageService = require('./MessageService');
 
-export class DeployHandler {
+module.exports = class DeployHandler {
     constructor(repoName, branchName) {
         this.repoName = repoName;
         this.branchName = branchName;
@@ -24,14 +24,16 @@ export class DeployHandler {
     }
 
     deploy() {   
-        // The server restart itself so you only get started... message but no done message.
-        // It creates a confusion therefore no messages for the deploy server itself
+        // The deploy server restart itself when commited so you only get 'started...' message but no 'success' message
+        // you get the 'deploy server started' message but still
+        // it creates a confusion therefore no start message for the deploy server itself
+        // the below check only exists here for the start message as the success message is ignored when it is restarted
         if (this.repoName !== process.env.APP_REPO_NAME) {
-            MessageHandler.writeMessage(
+            MessageService.writeMessage(
                 undefined,
-                MessageHandler.runtime.start,
+                MessageService.runtime.start,
                 { 
-                    ...this.getNames()
+                    ...this.getNames() // MessageService expects the variables to replace in the message as an object
                 });
         }
 
@@ -50,15 +52,16 @@ export class DeployHandler {
                     },
                     (error, stdout, stderr) => {
 
+                        // the below logs are not sent to Slack because they spam the Slack channel.
                         console.log(`${stdout}`); // Output stdout of each command run in shell
                         console.log(`${stderr}`); // Output stderr of each command run in shell
                         
                         //Log the end result to console and/or send to Slack
                         if (error !== null) {
                             // Log with error
-                            return MessageHandler.writeMessage(
+                            return MessageService.writeMessage(
                                 undefined,
-                                MessageHandler.runtime.error,
+                                MessageService.runtime.error,
                                 {
                                     ...this.getNames(),
                                     error
@@ -66,9 +69,9 @@ export class DeployHandler {
                             );
                         } else {
                             // Log with time taken to run the script
-                            return MessageHandler.writeMessage(
+                            return MessageService.writeMessage(
                                 undefined,
-                                MessageHandler.runtime.success,
+                                MessageService.runtime.success,
                                 {
                                     ...this.getNames(),
                                     startTime: startTime,

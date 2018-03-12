@@ -42,7 +42,7 @@ const readableTime = (date) => {
     return Math.floor(seconds) + 's';
 }
 
-export default {
+module.exports = {
   readableFileSize,
   readableTime
 }

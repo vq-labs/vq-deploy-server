@@ -5,7 +5,7 @@ const http = require('http');
 const exec = require('child_process').exec;
 
 const APP_NAME = process.env.APP_NAME;
-const PORT = process.env.SERVER_PORT;
+const SERVER_PORT = process.env.SERVER_PORT;
 
 // # HOOKS
 const createWebhookHandler = require('github-webhook-handler');
@@ -14,19 +14,19 @@ const WebhookHandler = createWebhookHandler({ path: process.env.GITHUB_HOOK_PATH
 
 
 // # MESSAGES
-// Get initialized singleton class of MessageHandler
-const MessageHandler = require('./MessageHandlerClass');
+// Get initialized singleton class of MessageService
+const MessageService = require('./services/MessageService');
 
-// MessageHandler is a singleton so set its attributes
-MessageHandler.setAttributes({appName: APP_NAME, port: PORT});
+// MessageService is a singleton so set its attributes
+MessageService.setAttributes({appName: APP_NAME, port: SERVER_PORT});
 
 
 // # DEPLOY
-const DeployHandler = require('./DeployHandlerClass');
+const DeployService = require('./services/DeployService');
 
 
 // # ROUTES
-const RouteHandler = require('./RouteHandler');
+const routes = require('./routes');
 
 
 // # SERVER
@@ -35,17 +35,17 @@ http
         return WebhookHandler(
             req,
             res,
-            (err, req, res) => RouteHandler // Handle routes that are not equal to GITHUB_HOOK_PATH
+            (err, req, res) => routes // Handle routes that are not equal to GITHUB_HOOK_PATH
         );
     })
-    .listen(process.env.SERVER_PORT, () => {
+    .listen(SERVER_PORT, () => {
         // Server start message
-        return MessageHandler.writeMessage(
+        return MessageService.writeMessage(
             undefined,
-            MessageHandler.server.start,
+            MessageService.server.start,
             {
                 appName: APP_NAME,
-                port: PORT 
+                port: SERVER_PORT 
             }
         );
     });
@@ -53,9 +53,9 @@ http
 
 WebhookHandler.on('error', (error) => {
     // Handle Errors
-    return MessageHandler.writeMessage(
+    return MessageService.writeMessage(
         undefined,
-        MessageHandler.server.error,
+        MessageService.server.error,
         {
             appName: APP_NAME,
             error
@@ -68,6 +68,6 @@ WebhookHandler.on('push', (event) => {
     const branchName = event.payload.ref.replace("refs/heads/", "");
 
     // Deploy
-    const deployer = new DeployHandler(repoName, branchName);
+    const deployer = new DeployService(repoName, branchName);
     return deployer.deploy();
 });
