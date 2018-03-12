@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const appRoot = require('app-root-path').path;
+const exec = require('child_process').exec;
 
 const DeploymentStrategies = require('../constants/DeploymentStrategies.json');
 
