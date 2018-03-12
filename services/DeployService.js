@@ -47,6 +47,7 @@ module.exports = class DeployHandler {
             this.scriptFile,
             fs.constants.S_IXGRP, //give execute/search by group permission. https://nodejs.org/api/fs.html#fs_file_modes
             err => {
+                console.log('chmod success');
                 return 
                 exec(
                     this.scriptFile, // Run shell script
@@ -56,6 +57,7 @@ module.exports = class DeployHandler {
                     },
                     (error, stdout, stderr) => {
 
+                        console.log('exec success');
                         // the below logs are not sent to Slack because they spam the Slack channel.
                         console.log(`${stdout}`); // Output stdout of each command run in shell
                         console.log(`${stderr}`); // Output stderr of each command run in shell
