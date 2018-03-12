@@ -32,7 +32,7 @@ const routes = require('./routes');
 // # SERVER
 http
     .createServer((req, res) => {
-        return WebhookHandler(
+        WebhookHandler(
             req,
             res,
             routes // Handle routes that are not equal to GITHUB_HOOK_PATH
