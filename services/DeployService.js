@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const appRoot = require('app-root-path').path;
 
 const DeploymentStrategies = require('../constants/DeploymentStrategies.json');
@@ -31,7 +32,7 @@ module.exports = class DeployHandler {
         if (this.repoName !== process.env.APP_REPO_NAME) {
             MessageService.writeMessage(
                 undefined,
-                MessageService.prototype.runtime.start,
+                MessageService.runtime.start,
                 Object.assign(
                     {},
                     this.getNames()
@@ -63,7 +64,7 @@ module.exports = class DeployHandler {
                             // Log with error
                             return MessageService.writeMessage(
                                 undefined,
-                                MessageService.prototype.runtime.error,
+                                MessageService.runtime.error,
                                 Object.assign(
                                     {},
                                     this.getNames()
@@ -73,7 +74,7 @@ module.exports = class DeployHandler {
                             // Log with time taken to run the script
                             return MessageService.writeMessage(
                                 undefined,
-                                MessageService.prototype.runtime.success,
+                                MessageService.runtime.success,
                                 Object.assign(
                                     {},
                                     this.getNames(),
