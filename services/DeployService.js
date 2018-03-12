@@ -11,12 +11,11 @@ module.exports = class DeployHandler {
         this.repoName = repoName;
         this.branchName = branchName;
 
-        console.log('ds', DeploymentStrategies[repoName]);
 
         this.folderName = DeploymentStrategies[repoName].folder;
         this.scriptName = DeploymentStrategies[repoName][branchName];
-        this.scriptFile = path.join(appRoot, '../', folderName, scriptName);
-        this.currentWorkingDirectory = path.join(appRoot, '../', folderName);
+        this.scriptFile = path.join(appRoot, '../', this.folderName, this.scriptName);
+        this.currentWorkingDirectory = path.join(appRoot, '../', this.folderName);
     }
 
     getNames() {
