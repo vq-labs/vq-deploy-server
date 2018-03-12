@@ -7,7 +7,7 @@ const readableFileSize = (bytes, si) => {
     const units = si
         ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
         : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
-    const u = -1;
+    let u = -1;
     do {
         bytes /= thresh;
         ++u;
