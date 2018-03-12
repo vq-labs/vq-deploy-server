@@ -36,7 +36,7 @@ module.exports = function(res) {
     
             // Also return the status of servers as a response
             res.statusCode = 200;
-            return res.end(JSON.stringify(runningProcess, null, 2));
+            return res.end(JSON.stringify(trimmedProcessList, null, 2));
         });
     });
 }
