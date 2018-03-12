@@ -20,9 +20,9 @@ class MessageService {
         }
 
         this.runtime = {
-            start: 'run.start',
-            error: 'run.error',
-            success: 'run.success'
+            start: 'runtime.start',
+            error: 'runtime.error',
+            success: 'runtime.success'
         }
     }
 
