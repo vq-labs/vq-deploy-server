@@ -81,7 +81,7 @@ class MessageService {
                 server, // initial server object is only consists of title and color
                 {
                     title: server.title(runningProcess), 
-                    fallback: server.title(runningProces), // fallback is the same as title so no need to include it in MESSAGES
+                    fallback: server.title(runningProcess), // fallback is the same as title so no need to include it in MESSAGES
                     // if the status is online meaning there will be some statistics such as
                     // CPU, memory usage and uptime so they will be shown as attachments
                     // otherwise nothing will be shown other than the status of the server
