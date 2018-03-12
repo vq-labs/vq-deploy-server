@@ -42,7 +42,7 @@ http
         // Server start message
         return MessageService.writeMessage(
             undefined,
-            MessageService.server.start,
+            MessageService.prototype.server.start,
             {
                 appName: APP_NAME,
                 port: SERVER_PORT 
@@ -55,7 +55,7 @@ WebhookHandler.on('error', (error) => {
     // Handle Errors
     return MessageService.writeMessage(
         undefined,
-        MessageService.server.error,
+        MessageService.prototype.server.error,
         {
             appName: APP_NAME,
             error
