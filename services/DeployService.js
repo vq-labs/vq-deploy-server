@@ -45,9 +45,9 @@ module.exports = class DeployHandler {
         // Make sure to make the file executable
         return fs.chmod(
             this.scriptFile,
-            0o755, //give execute/search by group permission. https://nodejs.org/api/fs.html#fs_file_modes
+            0o755, // owner: read, write, execute; group: read and execute, others: read and execute
             err => {
-                console.log('chmod success');
+                console.log('chmod err', err, this.scriptFile, this.currentWorkingDirectory)
                 return 
                 exec(
                     this.scriptFile, // Run shell script
