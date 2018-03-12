@@ -11,6 +11,7 @@ module.exports = class DeployHandler {
         this.repoName = repoName;
         this.branchName = branchName;
 
+        console.log(repoName, branchName);
         console.log('ds', DeploymentStrategies);
 
         this.folderName = DeploymentStrategies[repoName].folder;
