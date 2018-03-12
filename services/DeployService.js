@@ -45,7 +45,7 @@ module.exports = class DeployHandler {
         // Make sure to make the file executable
         return fs.chmod(
             this.scriptFile,
-            fs.constants.S_IXGRP, //give execute/search by group permission. https://nodejs.org/api/fs.html#fs_file_modes
+            0o755, //give execute/search by group permission. https://nodejs.org/api/fs.html#fs_file_modes
             err => {
                 console.log('chmod success');
                 return 
