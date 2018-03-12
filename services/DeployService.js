@@ -49,8 +49,7 @@ module.exports = class DeployHandler {
             0o755, // owner: read, write, execute; group: read and execute, others: read and execute
             err => {
                 console.log('chmod err', err, this.scriptFile, this.currentWorkingDirectory)
-                return 
-                exec(
+                return exec(
                     this.scriptFile, // Run shell script
                     {
                         // Take the project directory as base to run the sh commands
