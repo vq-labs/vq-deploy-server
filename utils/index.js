@@ -1,13 +1,13 @@
 const readableFileSize = (bytes, si) => {
     // Taken from https://stackoverflow.com/a/14919494/2302269
-    var thresh = si ? 1000 : 1024;
+    const thresh = si ? 1000 : 1024;
     if(Math.abs(bytes) < thresh) {
         return bytes + ' B';
     }
-    var units = si
+    const units = si
         ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
         : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
-    var u = -1;
+    const u = -1;
     do {
         bytes /= thresh;
         ++u;
@@ -18,7 +18,7 @@ const readableFileSize = (bytes, si) => {
 const readableTime = (date) => {
     // Taken from PM2 source code
     const seconds = Math.floor((new Date() - date) / 1000);
-    const interval = Math.floor(seconds / 31536000);
+    let interval = Math.floor(seconds / 31536000);
   
     if (interval > 1) {
       return interval + 'Y';
