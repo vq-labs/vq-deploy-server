@@ -7,21 +7,24 @@ module.exports = class SlackService {
         this.channelID = channelID; //#marketplace_status
     }
 
-    sendMessage(text, attachments) {
-        if (!text) {
-            text = ``;
+    sendMessage(title, attachments) {
+        if (!title) {
+            title = ``;
         }
         if (!attachments.length) {
             attachments = [];
         }
 
         if (this.isOn) {
-            this.web.chat.postMessage({
-                channel: this.channelID,
-                response_type: 'in_channel',
-                text,
-                attachments
-            });
+            this.web.chat.postMessage(
+                this.channelID,
+                title,
+                { 
+                    response_type: 'in_channel',
+                    as_user: false,
+                    attachments
+                }
+            );
         }
     }
 }
