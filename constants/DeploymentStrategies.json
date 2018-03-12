@@ -17,7 +17,8 @@
     "vq-marketplace-landing-page": {
         "name": "LANDING PAGE",
         "folder": "vq-marketplace-landing-page",
-        "master": "deploy.sh"
+        "master": "deploy.sh",
+        "VM-32": "deploy.sh"
     },
     "vq-labs.com": {
         "name": "VQ-LABS.COM",

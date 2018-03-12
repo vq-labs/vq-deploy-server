@@ -40,7 +40,6 @@ class MessageService {
         if (typeof path === 'string') {
             // if only a string is passed as path
             // it gets the corresponding message template from MESSAGES
-            console.log('PATH', path);
             let message = _get(MESSAGES, path);
     
             attachments.push(
