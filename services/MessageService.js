@@ -53,7 +53,7 @@ class MessageService {
                 )
             );
         } else if (Array.isArray(path)) {
-            // if the path is an array (an example can be seen in writeStatusMessage function)
+            // if the path is an array (an example can be seen in writeServerStatusMessage function)
             // we just send the already provided attachments
             attachments = path;
         }
@@ -68,7 +68,7 @@ class MessageService {
         }
     }
 
-    writeStatusMessage(processList) {
+    writeServerStatusMessage(processList) {
         // Attachment API of Slack is used to display server information because they seem less like a 'message'
         // and they also include some coloring that can be used for the status
         const servers = processList.map(runningProcess => {

@@ -32,7 +32,7 @@ module.exports = function(res) {
             });
     
             // Build and send the status of servers to Slack
-            MessageService.writeStatusMessage(undefined, trimmedProcessList);
+            MessageService.writeServerStatusMessage(trimmedProcessList);
     
             // Also return the status of servers as a response
             res.statusCode = 200;
