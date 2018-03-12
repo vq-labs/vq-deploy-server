@@ -39,11 +39,14 @@ class MessageService {
             let message = _get(MESSAGES, path);
     
             attachments.push(
-                {
-                    ...message, // the color already exists in the message object
-                    title: message.title(variables),
-                    fallback: message.title(variables) // fallback is the same as title
-                }
+                Object.assign(
+                    {},
+                    message, // the color already exists in the message object
+                    {
+                        title: message.title(variables),
+                        fallback: message.title(variables) // fallback is the same as title
+                    }
+                )
             );
         } else if (Array.isArray(path)) {
             // if the path is an array (an example can be seen in writeStatusMessage function)
@@ -69,18 +72,20 @@ class MessageService {
             const server = MESSAGES.server.status[runningProcess.status];
 
             // Set dynamic values for the message
-            return server = {
-                ...server, // initial server object is only consists of title and color
-                title: server.title(runningProcess), 
-                fallback: server.title(runningProces), // fallback is the same as title so no need to include it in MESSAGES
-                 // if the status is online meaning there will be some statistics such as
-                 // CPU, memory usage and uptime so they will be shown as attachments
-                 // otherwise nothing will be shown other than the status of the server
-                fields: runningProcess.status === 'online' ?
-                    MESSAGES.server.status.details(runningProcess) :
-                    []
-
-            }
+            return server = Object.assign(
+                {},
+                server, // initial server object is only consists of title and color
+                {
+                    title: server.title(runningProcess), 
+                    fallback: server.title(runningProces), // fallback is the same as title so no need to include it in MESSAGES
+                    // if the status is online meaning there will be some statistics such as
+                    // CPU, memory usage and uptime so they will be shown as attachments
+                    // otherwise nothing will be shown other than the status of the server
+                    fields: runningProcess.status === 'online' ?
+                        MESSAGES.server.status.details(runningProcess) :
+                        []
+                }
+            )
         });
 
         return this.writeMessage(MESSAGES.server.status.title, servers);

@@ -32,9 +32,11 @@ module.exports = class DeployHandler {
             MessageService.writeMessage(
                 undefined,
                 MessageService.runtime.start,
-                { 
-                    ...this.getNames() // MessageService expects the variables to replace in the message as an object
-                });
+                Object.assign(
+                    {},
+                    this.getNames()
+                )
+            );
         }
 
         const startTime = new Date().getTime();
@@ -62,21 +64,24 @@ module.exports = class DeployHandler {
                             return MessageService.writeMessage(
                                 undefined,
                                 MessageService.runtime.error,
-                                {
-                                    ...this.getNames(),
-                                    error
-                                }
+                                Object.assign(
+                                    {},
+                                    this.getNames()
+                                )
                             );
                         } else {
                             // Log with time taken to run the script
                             return MessageService.writeMessage(
                                 undefined,
                                 MessageService.runtime.success,
-                                {
-                                    ...this.getNames(),
-                                    startTime: startTime,
-                                    endTime: new Date().getTime()
-                                }
+                                Object.assign(
+                                    {},
+                                    this.getNames(),
+                                    {
+                                        startTime: startTime,
+                                        endTime: new Date().getTime() 
+                                    }
+                                )
                             );
                         }
 
