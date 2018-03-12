@@ -29,7 +29,11 @@ class MessageService {
     setAttributes(attributes) { return this.attributes = attributes; }
     getAttributes() { return this.attributes; } 
 
-    writeMessage(title = ``, path, variables) {
+    writeMessage(title, path, variables) {
+        if (!title) {
+            title = ``;
+        }
+        
         // Slack expects the attachments to be an array
         let attachments = [];
 
