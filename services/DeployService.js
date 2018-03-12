@@ -31,7 +31,7 @@ module.exports = class DeployHandler {
         if (this.repoName !== process.env.APP_REPO_NAME) {
             MessageService.writeMessage(
                 undefined,
-                MessageService.runtime.start,
+                MessageService.prototype.runtime.start,
                 Object.assign(
                     {},
                     this.getNames()
@@ -63,7 +63,7 @@ module.exports = class DeployHandler {
                             // Log with error
                             return MessageService.writeMessage(
                                 undefined,
-                                MessageService.runtime.error,
+                                MessageService.prototype.runtime.error,
                                 Object.assign(
                                     {},
                                     this.getNames()
@@ -73,7 +73,7 @@ module.exports = class DeployHandler {
                             // Log with time taken to run the script
                             return MessageService.writeMessage(
                                 undefined,
-                                MessageService.runtime.success,
+                                MessageService.prototype.runtime.success,
                                 Object.assign(
                                     {},
                                     this.getNames(),

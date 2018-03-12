@@ -33,7 +33,7 @@ class MessageService {
         if (!title) {
             title = ``;
         }
-        
+
         // Slack expects the attachments to be an array
         let attachments = [];
 
