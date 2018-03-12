@@ -35,7 +35,7 @@ http
         return WebhookHandler(
             req,
             res,
-            (err, req, res) => routes // Handle routes that are not equal to GITHUB_HOOK_PATH
+            (err, req, res) => routes(err, req, res) // Handle routes that are not equal to GITHUB_HOOK_PATH
         );
     })
     .listen(SERVER_PORT, () => {

@@ -48,7 +48,6 @@ module.exports = class DeployHandler {
             this.scriptFile,
             0o755, // owner: read, write, execute; group: read and execute, others: read and execute
             err => {
-                console.log('chmod err', err, this.scriptFile, this.currentWorkingDirectory)
                 return exec(
                     this.scriptFile, // Run shell script
                     {
@@ -57,7 +56,6 @@ module.exports = class DeployHandler {
                     },
                     (error, stdout, stderr) => {
 
-                        console.log('exec success');
                         // the below logs are not sent to Slack because they spam the Slack channel.
                         console.log(`${stdout}`); // Output stdout of each command run in shell
                         console.log(`${stderr}`); // Output stderr of each command run in shell
