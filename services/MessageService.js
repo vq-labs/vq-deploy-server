@@ -76,7 +76,7 @@ class MessageService {
             const server = MESSAGES.server.status[runningProcess.status];
 
             // Set dynamic values for the message
-            return server = Object.assign(
+            return Object.assign(
                 {},
                 server, // initial server object is only consists of title and color
                 {
