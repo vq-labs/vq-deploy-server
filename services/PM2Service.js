@@ -36,7 +36,7 @@ module.exports = function(res) {
     
             // Also return the status of servers as a response
             res.writeHead(200, {"Content-Type": "application/json"});
-            return res.end({
+            return res.end(JSON.stringify({
                 "response_type": "in_channel",
                 "text": "It's 80 degrees right now.",
                 "attachments": [
@@ -44,7 +44,7 @@ module.exports = function(res) {
                         "text":"Partly cloudy today and tomorrow"
                     }
                 ]
-            });
+            }));
         });
     });
 }
