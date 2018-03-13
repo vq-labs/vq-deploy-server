@@ -35,7 +35,8 @@ module.exports = function(res) {
             MessageService.writeServerStatusMessage(trimmedProcessList);
     
             // Also return the status of servers as a response
-            return res.status(200).send({
+            res.writeHead(200, {"Content-Type": "application/json"});
+            return res.end({
                 "response_type": "in_channel",
                 "text": "It's 80 degrees right now.",
                 "attachments": [
