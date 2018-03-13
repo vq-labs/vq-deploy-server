@@ -7,16 +7,18 @@ const DeploymentStrategies = require('../constants/DeploymentStrategies.json');
 
 const MessageService = require('./MessageService');
 
-module.exports = class DeployHandler {
+module.exports = class DeployService {
     constructor(repoName, branchName) {
         this.repoName = repoName;
         this.branchName = branchName;
 
 
         this.folderName = DeploymentStrategies[repoName].folder;
-        this.scriptName = DeploymentStrategies[repoName][branchName];
-        this.scriptFile = path.join(appRoot, '../', this.folderName, this.scriptName);
-        this.currentWorkingDirectory = path.join(appRoot, '../', this.folderName);
+        if (this.folderName) {
+            this.scriptName = DeploymentStrategies[repoName][branchName];
+            this.scriptFile = path.join(appRoot, '../', this.folderName, this.scriptName);
+            this.currentWorkingDirectory = path.join(appRoot, '../', this.folderName);
+        }
     }
 
     getNames() {
