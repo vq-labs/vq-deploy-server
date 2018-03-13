@@ -32,11 +32,11 @@ module.exports = function(res) {
             });
     
             // Build and send the status of servers to Slack
-            MessageService.writeServerStatusMessage(trimmedProcessList);
+            MessageService.writeStatusMessage(trimmedProcessList);
     
             // Also return the status of servers as a response
             res.statusCode = 200;
-            return res.end({
+            return res.send({
                 "response_type": "in_channel",
                 "text": "It's 80 degrees right now.",
                 "attachments": [
