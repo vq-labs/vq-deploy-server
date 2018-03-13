@@ -31,20 +31,18 @@ module.exports = function(res) {
                 }
             });
     
-            // Build and send the status of servers to Slack
-            MessageService.writeServerStatusMessage(trimmedProcessList);
-    
-            // Also return the status of servers as a response
+            // You can access the status API by doing a POST request to /status
+            // Slack does this so if you return an object with the structure it expects
+            // It outputs a compiled Slack message (with attachments)
             res.writeHead(200, {"Content-Type": "application/json"});
-            return res.end(JSON.stringify({
-                "response_type": "in_channel",
-                "text": "It's 80 degrees right now.",
-                "attachments": [
-                    {
-                        "text":"Partly cloudy today and tomorrow"
-                    }
-                ]
-            }));
+
+            return res.end(
+                JSON.stringify({
+                    response_type: 'ephemeral',
+                    text: MESSAGES.server.status.title,
+                    attachments: trimmedProcessList
+                })
+            );
         });
     });
 }
