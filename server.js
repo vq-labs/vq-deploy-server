@@ -67,7 +67,9 @@ WebhookHandler.on('push', (event) => {
     const repoName = event.payload.repository.name;
     const branchName = event.payload.ref.replace("refs/heads/", "");
 
-    // Deploy
-    const deployer = new DeployService(repoName, branchName);
-    return deployer.deploy();
+    // Deploy if the pushed branch is the tracked branch for this server
+    if (branchName === process.env.GIT_BRANCH) {
+        const deployer = new DeployService(repoName, branchName);
+        return deployer.deploy();
+    }
 });
