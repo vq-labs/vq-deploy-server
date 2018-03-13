@@ -22,7 +22,8 @@ class MessageService {
         this.runtime = {
             start: 'runtime.start',
             error: 'runtime.error',
-            success: 'runtime.success'
+            success: 'runtime.success',
+            skip: 'runtime.skip'
         }
 
         this.messages = MESSAGES;

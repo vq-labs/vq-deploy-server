@@ -27,6 +27,22 @@ module.exports = class DeployHandler {
     }
 
     deploy() {   
+        if (this.folderName) {
+            return this._deploy();
+        } else {
+            MessageService.writeMessage(
+                undefined,
+                MessageService.runtime.skip,
+                Object.assign(
+                    {},
+                    this.getNames()
+                )
+            );
+        }
+    }
+    
+    // simulating a private variable
+    _deploy() {
         // The deploy server restart itself when commited so you only get 'started...' message but no 'success' message
         // you get the 'deploy server started' message but still
         // it creates a confusion therefore no start message for the deploy server itself

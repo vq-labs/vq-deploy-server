@@ -69,6 +69,10 @@ module.exports = {
         "success": {
             "title": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Deploy completed in ${variables.endTime - variables.startTime} miliseconds`,
             "color": "good"
+        },
+        "skip": {
+            "title": (variables) => `[DEPLOY][${variables.branchName}@${variables.repoName}] Skipping deploy as no deployment strategy has been found for ${variables.repoName} repository ${variables.branchName} branch`,
+            "color": "warning"
         }
     }
 }
