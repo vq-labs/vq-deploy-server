@@ -21,14 +21,32 @@ module.exports = function(res) {
             // Get only the variables we want
             const trimmedProcessList = processList.map(runningProcess => {
                 // We use runningProcess variable instead of process because process is a global variable. Just in case
-                return {
+
+                const server = MessageService.messages.server.status[runningProcess.status];
+                const trimmedProcess = {
                     name: runningProcess.name,
                     memory: utils.readableFileSize(runningProcess.monit.memory),
                     memoryRaw: runningProcess.monit.memory,
                     cpu: `${runningProcess.monit.cpu}%`,
                     status: runningProcess.pm2_env.status,
                     uptime: utils.readableTime(runningProcess.pm2_env.pm_uptime)
-                }
+                };
+
+                // Set dynamic values for the message
+                return Object.assign(
+                    {},
+                    server, // initial server object is only consists of title and color
+                    {
+                        title: server.title(trimmedProcess), 
+                        fallback: server.title(trimmedProcess), // fallback is the same as title so no need to include it in MESSAGES
+                        // if the status is online meaning there will be some statistics such as
+                        // CPU, memory usage and uptime so they will be shown as attachments
+                        // otherwise nothing will be shown other than the status of the server
+                        fields: trimmedProcess.status === 'online' ?
+                        MessageService.messages.server.status.details(trimmedProcess) :
+                            []
+                    }
+                )
             });
     
             // You can access the status API by doing a POST request to /status
