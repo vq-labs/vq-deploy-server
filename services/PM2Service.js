@@ -23,7 +23,7 @@ module.exports = function(res) {
                 // We use runningProcess variable instead of process because process is a global variable. Just in case
 
                 const server = MessageService.messages.server.status[runningProcess.status];
-                console.log('SSS', MEssageService.messages.server.status, server)
+                console.log('SSS', MessageService.messages.server.status, server)
 
                 const trimmedProcess = {
                     name: runningProcess.name,
