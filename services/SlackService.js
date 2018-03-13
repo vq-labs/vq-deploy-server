@@ -16,12 +16,10 @@ module.exports = class SlackService {
         }
 
         if (this.isOn) {
-            this.web.chat.postEphemeral(
-//                this.channelID,
+            this.web.chat.postMessage(
+                this.channelID,
                 title,
                 { 
-                    response_type: 'in_channel',
-                    as_user: false,
                     attachments
                 }
             );
