@@ -14,11 +14,12 @@ module.exports = class DeployService {
 
 
         this.folderName = DeploymentStrategies[repoName].folder;
-        console.log('foldername', this.folderName)
         if (this.folderName) {
             this.scriptName = DeploymentStrategies[repoName][branchName];
-            this.scriptFile = path.join(appRoot, '../', this.folderName, this.scriptName);
-            this.currentWorkingDirectory = path.join(appRoot, '../', this.folderName);
+            if (this.scriptName) {
+                this.scriptFile = path.join(appRoot, '../', this.folderName, this.scriptName);
+                this.currentWorkingDirectory = path.join(appRoot, '../', this.folderName);
+            }
         }
     }
 
@@ -30,7 +31,7 @@ module.exports = class DeployService {
     }
 
     deploy() {   
-        if (this.folderName) {
+        if (this.folderName && this.scriptName) {
             return this._deploy();
         } else {
             MessageService.writeMessage(
