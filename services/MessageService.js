@@ -24,6 +24,8 @@ class MessageService {
             error: 'runtime.error',
             success: 'runtime.success'
         }
+
+        this.messages = MESSAGES;
     }
 
     setAttributes(attributes) { return this.attributes = attributes; }

@@ -39,7 +39,7 @@ module.exports = function(res) {
             return res.end(
                 JSON.stringify({
                     response_type: 'ephemeral',
-                    text: MESSAGES.server.status.title,
+                    text: MessageService.messages.server.status.title,
                     attachments: trimmedProcessList
                 })
             );
