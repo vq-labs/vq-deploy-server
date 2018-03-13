@@ -36,7 +36,15 @@ module.exports = function(res) {
     
             // Also return the status of servers as a response
             res.statusCode = 200;
-            return res.end({trimmedProcessList});
+            return res.end({
+                "response_type": "in_channel",
+                "text": "It's 80 degrees right now.",
+                "attachments": [
+                    {
+                        "text":"Partly cloudy today and tomorrow"
+                    }
+                ]
+            });
         });
     });
 }
