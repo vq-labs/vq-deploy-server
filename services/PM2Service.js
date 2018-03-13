@@ -23,6 +23,8 @@ module.exports = function(res) {
                 // We use runningProcess variable instead of process because process is a global variable. Just in case
 
                 const server = MessageService.messages.server.status[runningProcess.status];
+                console.log('SSS', MEssageService.messages.server.status, server)
+
                 const trimmedProcess = {
                     name: runningProcess.name,
                     memory: utils.readableFileSize(runningProcess.monit.memory),
@@ -43,7 +45,7 @@ module.exports = function(res) {
                         // CPU, memory usage and uptime so they will be shown as attachments
                         // otherwise nothing will be shown other than the status of the server
                         fields: trimmedProcess.status === 'online' ?
-                        MessageService.messages.server.status.details(trimmedProcess) :
+                            MessageService.messages.server.status.details(trimmedProcess) :
                             []
                     }
                 )
