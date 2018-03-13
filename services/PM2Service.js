@@ -22,9 +22,6 @@ module.exports = function(res) {
             const trimmedProcessList = processList.map(runningProcess => {
                 // We use runningProcess variable instead of process because process is a global variable. Just in case
 
-                const server = MessageService.messages.server.status[runningProcess.status];
-                console.log('SSS', runningProcess.status, MessageService.messages.server.status)
-
                 const trimmedProcess = {
                     name: runningProcess.name,
                     memory: utils.readableFileSize(runningProcess.monit.memory),
@@ -33,6 +30,8 @@ module.exports = function(res) {
                     status: runningProcess.pm2_env.status,
                     uptime: utils.readableTime(runningProcess.pm2_env.pm_uptime)
                 };
+                
+                const server = MessageService.messages.server.status[trimmedProcess.status];
 
                 // Set dynamic values for the message
                 return Object.assign(
