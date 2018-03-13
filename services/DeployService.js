@@ -14,6 +14,7 @@ module.exports = class DeployService {
 
 
         this.folderName = DeploymentStrategies[repoName].folder;
+        console.log('foldername', this.folderName)
         if (this.folderName) {
             this.scriptName = DeploymentStrategies[repoName][branchName];
             this.scriptFile = path.join(appRoot, '../', this.folderName, this.scriptName);
